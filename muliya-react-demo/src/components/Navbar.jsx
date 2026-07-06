@@ -1,72 +1,88 @@
-import { Search, Camera, Heart, MapPin, Menu } from "lucide-react";
+import { Link, NavLink } from "react-router-dom";
+import { Camera, Heart, MapPin, Menu, Search, X } from "lucide-react";
+import { useState } from "react";
 
-function Navbar({ searchText, setSearchText, openImageSearch }) {
+function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <>
-      {/* Top Announcement Bar */}
-      <div className="top-bar">
-        <div className="top-bar-content">
-          <span>✨ Welcome to Muliya Jewels</span>
+      <div className="top-strip">
+        <div className="top-strip-content">
+          <p>Creating Happiness Since 1944</p>
 
-          <div className="top-links">
-            <a href="#">Stores</a>
-            <a href="#">Collections</a>
-            <a href="#">Contact</a>
+          <div className="top-strip-links">
+            <a href="#">Gold Rate</a>
+            <a href="#">Silver Rate</a>
+            <a href="#">Showrooms</a>
           </div>
         </div>
       </div>
 
-      {/* Main Navbar */}
-      <nav className="navbar">
-        <div className="logo">
-          <img
-            src="https://muliya.in/wp-content/uploads/2022/10/logo.png"
-            alt="Muliya Jewels"
-          />
+      <header className="main-navbar">
+        <div className="navbar-container">
+          <Link to="/" className="brand-logo">
+            <div className="brand-mark">M</div>
+
+            <div>
+              <h2>Muliya</h2>
+              <p>Gold & Diamonds</p>
+            </div>
+          </Link>
+
+          <nav className={menuOpen ? "nav-menu active" : "nav-menu"}>
+            <NavLink to="/" onClick={() => setMenuOpen(false)}>
+              Home
+            </NavLink>
+
+            <NavLink to="/gold" onClick={() => setMenuOpen(false)}>
+              Gold
+            </NavLink>
+
+            <NavLink to="/diamond" onClick={() => setMenuOpen(false)}>
+              Diamond
+            </NavLink>
+
+            <NavLink to="/silver" onClick={() => setMenuOpen(false)}>
+              Silver
+            </NavLink>
+
+            <a href="#collections" onClick={() => setMenuOpen(false)}>
+              Collections
+            </a>
+
+            <a href="#stores" onClick={() => setMenuOpen(false)}>
+              Showrooms
+            </a>
+          </nav>
+
+          <div className="navbar-actions">
+            <button className="navbar-search">
+              <Search size={18} />
+              <span>Search</span>
+            </button>
+
+            <button className="navbar-icon-btn">
+              <Camera size={19} />
+            </button>
+
+            <button className="navbar-icon-btn">
+              <Heart size={19} />
+            </button>
+
+            <button className="navbar-icon-btn">
+              <MapPin size={19} />
+            </button>
+
+            <button
+              className="mobile-menu-btn"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              {menuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
-
-        <ul className="nav-links">
-          <li><a href="#">Gold</a></li>
-          <li><a href="#">Diamond</a></li>
-          <li><a href="#">Silver</a></li>
-          <li><a href="#">Collections</a></li>
-          <li><a href="#">Gifting</a></li>
-          <li><a href="#">Offers</a></li>
-        </ul>
-
-        <div className="search-container">
-          <Search size={18} />
-
-          <input
-            type="text"
-            placeholder="Search by Jewellery Code..."
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-          />
-        </div>
-
-        <div className="nav-icons">
-          <button
-            className="icon-btn"
-            title="AI Image Search"
-            onClick={openImageSearch}
-          >
-            <Camera size={20} />
-          </button>
-
-          <button className="icon-btn" title="Wishlist">
-            <Heart size={20} />
-          </button>
-
-          <button className="icon-btn" title="Store Locator">
-            <MapPin size={20} />
-          </button>
-
-          <button className="menu-btn">
-            <Menu size={24} />
-          </button>
-        </div>
-      </nav>
+      </header>
     </>
   );
 }
