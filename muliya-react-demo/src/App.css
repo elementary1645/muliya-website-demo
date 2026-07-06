@@ -1,0 +1,418 @@
+/* ===========================
+   Google Font
+=========================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* ===========================
+   Global Reset
+=========================== */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f8f6f2;
+    color:#333;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+button{
+    cursor:pointer;
+    border:none;
+    outline:none;
+}
+
+img{
+    width:100%;
+    display:block;
+}
+
+.app{
+    width:100%;
+    min-height:100vh;
+}
+
+/* ===========================
+   Main Layout
+=========================== */
+
+.content-container{
+    width:90%;
+    max-width:1450px;
+    margin:40px auto;
+    display:grid;
+    grid-template-columns:260px 1fr;
+    gap:30px;
+}
+
+/* ===========================
+   Sections
+=========================== */
+
+section{
+    padding:60px 0;
+}
+
+/* ===========================
+   Reusable Container
+=========================== */
+
+.container{
+    width:90%;
+    max-width:1400px;
+    margin:auto;
+}
+
+/* ===========================
+   Buttons
+=========================== */
+
+.primary-btn{
+    background:#b08d57;
+    color:white;
+    padding:12px 24px;
+    border-radius:8px;
+    font-size:15px;
+    font-weight:500;
+    transition:.3s;
+}
+
+.primary-btn:hover{
+    background:#97713f;
+}
+
+.secondary-btn{
+    background:white;
+    border:1px solid #b08d57;
+    color:#b08d57;
+    padding:10px 20px;
+    border-radius:8px;
+    transition:.3s;
+}
+
+.secondary-btn:hover{
+    background:#b08d57;
+    color:white;
+}
+
+/* ===========================
+   Headings
+=========================== */
+
+.section-title{
+    font-size:34px;
+    font-weight:700;
+    text-align:center;
+    margin-bottom:15px;
+    color:#222;
+}
+
+.section-subtitle{
+    text-align:center;
+    color:#777;
+    margin-bottom:45px;
+}
+
+/* ===========================
+   Cards
+=========================== */
+
+.card{
+    background:white;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+/* ===========================
+   Inputs
+=========================== */
+
+input,
+select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    font-size:15px;
+}
+
+input:focus,
+select:focus{
+    border-color:#b08d57;
+    outline:none;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media(max-width:1000px){
+
+.content-container{
+    grid-template-columns:1fr;
+}
+
+}
+
+@media(max-width:768px){
+
+.section-title{
+    font-size:28px;
+}
+
+section{
+    padding:40px 0;
+}
+
+}
+
+@media(max-width:500px){
+
+.content-container{
+    width:95%;
+}
+
+.section-title{
+    font-size:24px;
+}
+/* ===========================
+   NAVBAR
+=========================== */
+
+.top-bar{
+    background:#222;
+    color:#fff;
+    padding:10px 5%;
+    font-size:14px;
+}
+
+.top-bar-content{
+    max-width:1400px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.top-links{
+    display:flex;
+    gap:20px;
+}
+
+.top-links a{
+    color:white;
+    transition:.3s;
+}
+
+.top-links a:hover{
+    color:#d4af37;
+}
+
+.navbar{
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 5%;
+    box-shadow:0 2px 12px rgba(0,0,0,.08);
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.logo img{
+    height:65px;
+    width:auto;
+}
+
+.nav-links{
+    list-style:none;
+    display:flex;
+    gap:30px;
+}
+
+.nav-links a{
+    font-weight:500;
+    transition:.3s;
+}
+
+.nav-links a:hover{
+    color:#b08d57;
+}
+
+.search-container{
+    width:320px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#f3f3f3;
+    padding:10px 15px;
+    border-radius:10px;
+}
+
+.search-container input{
+    border:none;
+    background:transparent;
+    outline:none;
+    padding:0;
+}
+
+.nav-icons{
+    display:flex;
+    gap:12px;
+    align-items:center;
+}
+
+.icon-btn,
+.menu-btn{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#f4f4f4;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.3s;
+}
+
+.icon-btn:hover,
+.menu-btn:hover{
+    background:#b08d57;
+    color:white;
+}
+
+.menu-btn{
+    display:none;
+}
+
+/* ===========================
+   RESPONSIVE NAVBAR
+=========================== */
+
+@media(max-width:1200px){
+
+.nav-links{
+    display:none;
+}
+
+.menu-btn{
+    display:flex;
+}
+
+.search-container{
+    width:250px;
+}
+
+}
+
+@media(max-width:768px){
+
+.top-bar-content{
+    flex-direction:column;
+    gap:10px;
+}
+
+.search-container{
+    display:none;
+}
+
+.logo img{
+    height:55px;
+}
+
+}
+/* ===========================
+   HERO
+=========================== */
+
+.hero {
+  min-height: 580px;
+  background:
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+    url("https://muliya.in/wp-content/uploads/2023/01/Gold-Diamond-Jewellery.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+}
+
+.hero-overlay {
+  width: 100%;
+  padding: 0 5%;
+}
+
+.hero-content {
+  max-width: 680px;
+  color: white;
+}
+
+.hero-small-text {
+  font-size: 18px;
+  color: #d4af37;
+  font-weight: 600;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+
+.hero-content h1 {
+  font-size: 64px;
+  line-height: 1.1;
+  margin-bottom: 22px;
+}
+
+.hero-description {
+  font-size: 18px;
+  line-height: 1.7;
+  margin-bottom: 34px;
+  color: #f3f3f3;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.secondary-hero-btn {
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.secondary-hero-btn:hover {
+  background: white;
+  color: #222;
+}
+
+@media(max-width:768px) {
+  .hero {
+    min-height: 480px;
+  }
+
+  .hero-content h1 {
+    font-size: 42px;
+  }
+
+  .hero-description {
+    font-size: 16px;
+  }
+}
+
+}
