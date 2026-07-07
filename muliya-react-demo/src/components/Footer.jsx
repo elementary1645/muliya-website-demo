@@ -1,12 +1,5 @@
 import { Link } from "react-router-dom";
-import {
-  Facebook,
-  Instagram,
-  Mail,
-  MapPin,
-  Phone,
-  Youtube,
-} from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 
 function Footer() {
   return (
@@ -31,15 +24,15 @@ function Footer() {
 
             <div className="footer-socials">
               <a href="#" aria-label="Instagram">
-                <Instagram size={18} />
+                IG
               </a>
 
               <a href="#" aria-label="Facebook">
-                <Facebook size={18} />
+                FB
               </a>
 
               <a href="#" aria-label="YouTube">
-                <Youtube size={18} />
+                YT
               </a>
             </div>
           </div>
