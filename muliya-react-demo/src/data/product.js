@@ -13,6 +13,11 @@ const products = [
     image: "https://picsum.photos/600/600?random=1",
     trending: true,
     featured: true,
+    branchAvailability: {
+  Bengaluru: true,
+  Puttur: true,
+  Madikeri: false,
+},
   },
 
   {
@@ -29,6 +34,11 @@ const products = [
     image: "https://picsum.photos/600/600?random=2",
     trending: true,
     featured: true,
+    branchAvailability: {
+  Bengaluru: true,
+  Puttur: true,
+  Madikeri: false,
+},
   },
 
   {
@@ -45,6 +55,11 @@ const products = [
     image: "https://picsum.photos/600/600?random=3",
     trending: true,
     featured: false,
+    branchAvailability: {
+  Bengaluru: true,
+  Puttur: true,
+  Madikeri: false,
+},
   },
 
   {
@@ -61,6 +76,11 @@ const products = [
     image: "https://picsum.photos/600/600?random=4",
     trending: false,
     featured: true,
+    branchAvailability: {
+  Bengaluru: true,
+  Puttur: true,
+  Madikeri: false,
+},
   },
 
   {
@@ -77,6 +97,11 @@ const products = [
     image: "https://picsum.photos/600/600?random=5",
     trending: true,
     featured: false,
+    branchAvailability: {
+  Bengaluru: true,
+  Puttur: true,
+  Madikeri: false,
+},
   },
 
   {
@@ -93,6 +118,11 @@ const products = [
     image: "https://picsum.photos/600/600?random=6",
     trending: true,
     featured: false,
+    branchAvailability: {
+  Bengaluru: true,
+  Puttur: true,
+  Madikeri: false,
+},
   },
 
   {
@@ -109,6 +139,11 @@ const products = [
     image: "https://picsum.photos/600/600?random=7",
     trending: true,
     featured: true,
+    branchAvailability: {
+  Bengaluru: true,
+  Puttur: true,
+  Madikeri: false,
+},
   },
 
   {
@@ -125,6 +160,11 @@ const products = [
     image: "https://picsum.photos/600/600?random=8",
     trending: true,
     featured: true,
+    branchAvailability: {
+  Bengaluru: true,
+  Puttur: true,
+  Madikeri: false,
+},
   },
 
   {
@@ -141,6 +181,11 @@ const products = [
     image: "https://picsum.photos/600/600?random=9",
     trending: true,
     featured: false,
+    branchAvailability: {
+  Bengaluru: true,
+  Puttur: true,
+  Madikeri: false,
+},
   },
 
   {
@@ -157,6 +202,11 @@ const products = [
     image: "https://picsum.photos/600/600?random=10",
     trending: false,
     featured: true,
+    branchAvailability: {
+  Bengaluru: true,
+  Puttur: true,
+  Madikeri: false,
+},
   },
 
   {
@@ -173,6 +223,11 @@ const products = [
     image: "https://picsum.photos/600/600?random=11",
     trending: true,
     featured: false,
+    branchAvailability: {
+  Bengaluru: true,
+  Puttur: true,
+  Madikeri: false,
+},
   },
 
   {
@@ -189,6 +244,11 @@ const products = [
     image: "https://picsum.photos/600/600?random=12",
     trending: true,
     featured: false,
+    branchAvailability: {
+  Bengaluru: true,
+  Puttur: true,
+  Madikeri: false,
+},
   },
 
   {
@@ -205,6 +265,11 @@ const products = [
     image: "https://picsum.photos/600/600?random=13",
     trending: true,
     featured: true,
+    branchAvailability: {
+  Bengaluru: true,
+  Puttur: true,
+  Madikeri: false,
+},
   },
 
   {
@@ -221,6 +286,11 @@ const products = [
     image: "https://picsum.photos/600/600?random=14",
     trending: false,
     featured: true,
+    branchAvailability: {
+  Bengaluru: true,
+  Puttur: true,
+  Madikeri: false,
+},
   },
 
   {
@@ -237,6 +307,11 @@ const products = [
     image: "https://picsum.photos/600/600?random=15",
     trending: true,
     featured: false,
+    branchAvailability: {
+  Bengaluru: true,
+  Puttur: true,
+  Madikeri: false,
+},
   },
 
   {
@@ -253,6 +328,11 @@ const products = [
     image: "https://picsum.photos/600/600?random=16",
     trending: true,
     featured: false,
+    branchAvailability: {
+  Bengaluru: true,
+  Puttur: true,
+  Madikeri: false,
+},
   },
 
   {
@@ -269,6 +349,11 @@ const products = [
     image: "https://picsum.photos/600/600?random=17",
     trending: true,
     featured: false,
+    branchAvailability: {
+  Bengaluru: true,
+  Puttur: true,
+  Madikeri: false,
+},
   },
 
   {
@@ -285,6 +370,11 @@ const products = [
     image: "https://picsum.photos/600/600?random=18",
     trending: false,
     featured: true,
+    branchAvailability: {
+  Bengaluru: true,
+  Puttur: true,
+  Madikeri: false,
+},
   },
 ];
 

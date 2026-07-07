@@ -104,24 +104,38 @@ function ProductDetails() {
                   </button>
                 </div>
 
-                <div className="store-check-card">
-                  <div>
-                    <MapPin size={22} />
-                  </div>
+                <div className="branch-availability-card">
+  <div className="branch-availability-header">
+    <MapPin size={22} />
 
-                  <div>
-                    <h3>Check Branch Availability</h3>
-                    <p>
-                      View whether this design is available in Bangalore,
-                      Puttur, Madikeri, or other Muliya showrooms.
-                    </p>
-                  </div>
-                </div>
-              </div>
+    <div>
+      <h3>Branch Availability</h3>
+      <p>Check where this jewellery design is currently available.</p>
+    </div>
+  </div>
+
+  <div className="branch-list">
+    {Object.entries(product.branchAvailability).map(([branch, available]) => (
+      <div className="branch-row" key={branch}>
+        <span>{branch}</span>
+
+        <strong className={available ? "available" : "not-available"}>
+          {available ? "Available" : "Out of Stock"}
+        </strong>
+      </div>
+    ))}
+  </div>
+
+  <div className="branch-actions">
+    <button className="primary-btn">Book Appointment</button>
+      <button className="secondary-btn">Get Directions</button>
+        </div>
+          </div>
             </div>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
+    </main>
 
       <Footer />
     </div>
