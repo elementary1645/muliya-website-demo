@@ -1,12 +1,57 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Camera, Heart, MapPin, Menu, Search, X } from "lucide-react";
-import { useState } from "react";
+import {
+  Link,
+  NavLink,
+  useNavigate,
+} from "react-router-dom";
+
+import {
+  Camera,
+  Heart,
+  MapPin,
+  Menu,
+  Search,
+  Scale,
+  X,
+} from "lucide-react";
+
+import { useEffect, useState } from "react";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [wishlistCount, setWishlistCount] = useState(0);
+  const [compareCount, setCompareCount] = useState(0);
 
   const navigate = useNavigate();
+
+  const updateWishlistCount = () => {
+    const savedWishlist =
+      JSON.parse(localStorage.getItem("muliyaWishlist")) || [];
+    setWishlistCount(savedWishlist.length);
+  };
+
+  const updateCompareCount = () => {
+    const savedCompare =
+      JSON.parse(localStorage.getItem("muliyaCompare")) || [];
+    setCompareCount(savedCompare.length);
+  };
+
+  useEffect(() => {
+    updateWishlistCount();
+    updateCompareCount();
+
+    window.addEventListener("wishlistUpdated", updateWishlistCount);
+    window.addEventListener("compareUpdated", updateCompareCount);
+    window.addEventListener("storage", updateWishlistCount);
+    window.addEventListener("storage", updateCompareCount);
+
+    return () => {
+      window.removeEventListener("wishlistUpdated", updateWishlistCount);
+      window.removeEventListener("compareUpdated", updateCompareCount);
+      window.removeEventListener("storage", updateWishlistCount);
+      window.removeEventListener("storage", updateCompareCount);
+    };
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -27,7 +72,7 @@ function Navbar() {
           <div className="top-strip-links">
             <a href="#">Gold Rate</a>
             <a href="#">Silver Rate</a>
-            <a href="#stores">Showrooms</a>
+            <a href="/#stores">Showrooms</a>
           </div>
         </div>
       </div>
@@ -76,19 +121,44 @@ function Navbar() {
               />
             </form>
 
-            <a href="/#ai-search" className="navbar-icon-btn">
+            <a
+              href="/#ai-search"
+              className="navbar-icon-btn"
+              title="AI Image Search"
+            >
               <Camera size={19} />
             </a>
 
-            <button className="navbar-icon-btn">
+            <Link
+              to="/wishlist"
+              className="navbar-icon-btn wishlist-navbar-button"
+              title="Wishlist"
+            >
               <Heart size={19} />
-            </button>
 
-            <a href="/#stores" className="navbar-icon-btn">
+              {wishlistCount > 0 && (
+                <span className="wishlist-count">{wishlistCount}</span>
+              )}
+            </Link>
+
+            <Link
+              to="/compare"
+              className="navbar-icon-btn wishlist-navbar-button"
+              title="Compare"
+            >
+              <Scale size={19} />
+
+              {compareCount > 0 && (
+                <span className="wishlist-count">{compareCount}</span>
+              )}
+            </Link>
+
+            <a href="/#stores" className="navbar-icon-btn" title="Showrooms">
               <MapPin size={19} />
             </a>
 
             <button
+              type="button"
               className="mobile-menu-btn"
               onClick={() => setMenuOpen(!menuOpen)}
             >

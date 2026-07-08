@@ -6,6 +6,8 @@ import Diamond from "./pages/Diamond";
 import Silver from "./pages/Silver";
 import ProductDetails from "./pages/ProductDetails";
 import SearchResults from "./pages/SearchResults";
+import Wishlist from "./pages/Wishlist";
+import Compare from "./pages/Compare";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
       <Route path="/silver" element={<Silver />} />
       <Route path="/product/:id" element={<ProductDetails />} />
       <Route path="/search" element={<SearchResults />} />
+      <Route path="/wishlist" element={<Wishlist />} />
+      <Route path="/compare" element={<Compare />} />
 
       <Route
         path="*"
