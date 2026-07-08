@@ -5,19 +5,17 @@ import Gold from "./pages/Gold";
 import Diamond from "./pages/Diamond";
 import Silver from "./pages/Silver";
 import ProductDetails from "./pages/ProductDetails";
+import SearchResults from "./pages/SearchResults";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-
       <Route path="/gold" element={<Gold />} />
-
       <Route path="/diamond" element={<Diamond />} />
-
       <Route path="/silver" element={<Silver />} />
-
       <Route path="/product/:id" element={<ProductDetails />} />
+      <Route path="/search" element={<SearchResults />} />
 
       <Route
         path="*"

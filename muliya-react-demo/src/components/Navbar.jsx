@@ -1,9 +1,22 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Camera, Heart, MapPin, Menu, Search, X } from "lucide-react";
 import { useState } from "react";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchText, setSearchText] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    if (!searchText.trim()) return;
+
+    navigate(`/search?q=${encodeURIComponent(searchText.trim())}`);
+    setSearchText("");
+    setMenuOpen(false);
+  };
 
   return (
     <>
@@ -14,7 +27,7 @@ function Navbar() {
           <div className="top-strip-links">
             <a href="#">Gold Rate</a>
             <a href="#">Silver Rate</a>
-            <a href="#">Showrooms</a>
+            <a href="#stores">Showrooms</a>
           </div>
         </div>
       </div>
@@ -47,32 +60,33 @@ function Navbar() {
               Silver
             </NavLink>
 
-            <a href="#collections" onClick={() => setMenuOpen(false)}>
-              Collections
-            </a>
-
-            <a href="#stores" onClick={() => setMenuOpen(false)}>
-              Showrooms
-            </a>
+            <a href="/#collections">Collections</a>
+            <a href="/#stores">Showrooms</a>
           </nav>
 
           <div className="navbar-actions">
-            <button className="navbar-search">
-              <Search size={18} />
-              <span>Search</span>
-            </button>
+            <form className="navbar-search-form" onSubmit={handleSearch}>
+              <Search size={17} />
 
-            <button className="navbar-icon-btn">
+              <input
+                type="text"
+                placeholder="Search jewellery..."
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+            </form>
+
+            <a href="/#ai-search" className="navbar-icon-btn">
               <Camera size={19} />
-            </button>
+            </a>
 
             <button className="navbar-icon-btn">
               <Heart size={19} />
             </button>
 
-            <button className="navbar-icon-btn">
+            <a href="/#stores" className="navbar-icon-btn">
               <MapPin size={19} />
-            </button>
+            </a>
 
             <button
               className="mobile-menu-btn"

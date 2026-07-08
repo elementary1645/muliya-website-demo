@@ -1484,4 +1484,49 @@ h4 {
     gap: 15px;
     padding: 22px 0;
   }
+  .search-results-banner {
+  padding: 75px 0;
+  background: var(--light-cream);
+  text-align: center;
+}
+
+.search-results-banner h1 {
+  color: var(--primary-dark);
+  font-size: clamp(42px, 6vw, 64px);
+  margin-bottom: 12px;
+}
+
+.search-results-banner p {
+  color: var(--text-grey);
+  font-size: 14px;
+}
+
+.navbar-search-form {
+  width: 250px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border: 1px solid var(--light-grey);
+  background: var(--light-cream);
+}
+
+.navbar-search-form input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 12px;
+}
+
+@media (max-width: 720px) {
+  .navbar-search-form {
+    width: 145px;
+  }
+
+  .navbar-search-form input {
+    font-size: 11px;
+  }
+}
 }
