@@ -10,10 +10,13 @@ import {
   X,
   CalendarDays,
   Clock,
+  Share2,
+  Check,
 } from "lucide-react";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import TrendingProducts from "../components/TrendingProducts";
 
 import products from "../data/products";
 
@@ -25,6 +28,9 @@ function ProductDetails() {
 
   const [wishlist, setWishlist] = useState([]);
   const [compare, setCompare] = useState([]);
+  const [recentlyViewed, setRecentlyViewed] = useState([]);
+
+  const [linkCopied, setLinkCopied] = useState(false);
 
   const [showEnquiryModal, setShowEnquiryModal] = useState(false);
   const [enquirySuccess, setEnquirySuccess] = useState(false);
@@ -59,10 +65,37 @@ function ProductDetails() {
   }, []);
 
   useEffect(() => {
-    if (product) {
-      const productImages = product.images || [product.image];
-      setSelectedImage(productImages[0]);
-    }
+    if (!product) return;
+
+    const productImages = product.images || [product.image];
+
+    setSelectedImage(productImages[0]);
+    setShowZoomModal(false);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [product]);
+
+  useEffect(() => {
+    if (!product) return;
+
+    const savedRecentlyViewed =
+      JSON.parse(localStorage.getItem("muliyaRecentlyViewed")) || [];
+
+    const previousProducts = savedRecentlyViewed.filter(
+      (item) => item.id !== product.id
+    );
+
+    setRecentlyViewed(previousProducts.slice(0, 6));
+
+    const updatedRecentlyViewed = [product, ...previousProducts].slice(0, 6);
+
+    localStorage.setItem(
+      "muliyaRecentlyViewed",
+      JSON.stringify(updatedRecentlyViewed)
+    );
   }, [product]);
 
   const isWishlisted = product
@@ -72,6 +105,35 @@ function ProductDetails() {
   const isCompared = product
     ? compare.some((item) => item.id === product.id)
     : false;
+
+  const getSimilarProducts = () => {
+    if (!product) return [];
+
+    const otherProducts = products.filter((item) => item.id !== product.id);
+
+    return otherProducts
+      .map((item) => {
+        let score = 0;
+
+        if (item.category === product.category) score += 3;
+        if (item.type === product.type) score += 2;
+        if (item.collection === product.collection) score += 2;
+        if (item.purity === product.purity) score += 1;
+
+        return {
+          ...item,
+          similarityScore: score,
+        };
+      })
+      .filter((item) => item.similarityScore > 0)
+      .sort(
+        (firstProduct, secondProduct) =>
+          secondProduct.similarityScore - firstProduct.similarityScore
+      )
+      .slice(0, 4);
+  };
+
+  const similarProducts = getSimilarProducts();
 
   const getTodayDate = () => {
     const today = new Date();
@@ -97,7 +159,8 @@ function ProductDetails() {
 
     window.open(
       `https://www.google.com/maps/dir/?api=1&destination=${destination}`,
-      "_blank"
+      "_blank",
+      "noopener,noreferrer"
     );
   };
 
@@ -234,6 +297,37 @@ function ProductDetails() {
     setAppointmentSuccess(false);
   };
 
+  const handleShareProduct = async () => {
+    if (!product) return;
+
+    const productUrl = window.location.href;
+
+    const shareData = {
+      title: product.name,
+      text: `Check out ${product.name} - Jewellery Code: ${product.code}`,
+      url: productUrl,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        return;
+      }
+
+      await navigator.clipboard.writeText(productUrl);
+
+      setLinkCopied(true);
+
+      setTimeout(() => {
+        setLinkCopied(false);
+      }, 2000);
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        console.error("Unable to share product:", error);
+      }
+    }
+  };
+
   const handleAISearch = () => {
     navigate("/#ai-search");
   };
@@ -277,7 +371,11 @@ function ProductDetails() {
                   className="product-main-image"
                   onClick={() => setShowZoomModal(true)}
                 >
-                  <img src={selectedImage || product.image} alt={product.name} />
+                  <img
+                    src={selectedImage || product.image}
+                    alt={product.name}
+                  />
+
                   <span>Click to zoom</span>
                 </div>
 
@@ -285,7 +383,7 @@ function ProductDetails() {
                   {productImages.map((image, index) => (
                     <button
                       type="button"
-                      key={index}
+                      key={`${image}-${index}`}
                       className={
                         selectedImage === image
                           ? "product-thumbnail active"
@@ -307,7 +405,7 @@ function ProductDetails() {
                   onClick={handleAISearch}
                 >
                   <Camera size={18} />
-                  Find Similar with AI
+                  <span>Find Similar with AI</span>
                 </button>
               </div>
 
@@ -385,6 +483,19 @@ function ProductDetails() {
                     <Scale size={18} />
                     {isCompared ? "Remove Compare" : "Compare"}
                   </button>
+
+                  <button
+                    type="button"
+                    className={
+                      linkCopied
+                        ? "secondary-action-btn share-product-btn copied"
+                        : "secondary-action-btn share-product-btn"
+                    }
+                    onClick={handleShareProduct}
+                  >
+                    {linkCopied ? <Check size={18} /> : <Share2 size={18} />}
+                    {linkCopied ? "Link Copied" : "Share Product"}
+                  </button>
                 </div>
 
                 <div className="branch-availability-card">
@@ -440,6 +551,24 @@ function ProductDetails() {
             </div>
           </div>
         </section>
+
+        {similarProducts.length > 0 && (
+          <TrendingProducts
+            products={similarProducts}
+            title="Similar Jewellery"
+            subtitle="Explore related jewellery designs based on category, type, collection, and purity."
+            showViewAll={false}
+          />
+        )}
+
+        {recentlyViewed.length > 0 && (
+          <TrendingProducts
+            products={recentlyViewed}
+            title="Recently Viewed"
+            subtitle="Continue exploring jewellery designs you viewed recently."
+            showViewAll={false}
+          />
+        )}
       </main>
 
       {showEnquiryModal && (
@@ -621,9 +750,7 @@ function ProductDetails() {
                   </div>
 
                   <div className="appointment-form-field">
-                    <label htmlFor="appointment-branch">
-                      Preferred Showroom
-                    </label>
+                    <label htmlFor="appointment-branch">Preferred Showroom</label>
 
                     <select
                       id="appointment-branch"
@@ -737,6 +864,7 @@ function ProductDetails() {
             type="button"
             className="zoom-close-btn"
             onClick={() => setShowZoomModal(false)}
+            aria-label="Close image zoom"
           >
             <X size={26} />
           </button>
