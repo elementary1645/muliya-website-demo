@@ -1,10 +1,31 @@
+import { useEffect, useState } from "react";
+
 import Navbar from "../components/Navbar";
 import TrendingProducts from "../components/TrendingProducts";
 import Footer from "../components/Footer";
 
-import products from "../data/products";
+import localProducts from "../data/products";
+import { getProducts } from "../api/productApi";
 
 function Diamond() {
+  const [products, setProducts] = useState(localProducts);
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const backendProducts = await getProducts();
+
+        if (backendProducts.length > 0) {
+          setProducts(backendProducts);
+        }
+      } catch (error) {
+        console.log("Using local products fallback:", error.message);
+      }
+    };
+
+    loadProducts();
+  }, []);
+
   const diamondProducts = products.filter(
     (product) => product.category.toLowerCase() === "diamond"
   );
@@ -17,9 +38,7 @@ function Diamond() {
         <section className="category-page-banner diamond-page-banner">
           <div className="category-page-banner-overlay">
             <div className="category-page-banner-content">
-              <p className="category-page-eyebrow">
-                Muliya Gold & Diamonds
-              </p>
+              <p className="category-page-eyebrow">Muliya Gold & Diamonds</p>
 
               <h1>Diamond Jewellery</h1>
 

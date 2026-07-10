@@ -1,10 +1,31 @@
+import { useEffect, useState } from "react";
+
 import Navbar from "../components/Navbar";
 import TrendingProducts from "../components/TrendingProducts";
 import Footer from "../components/Footer";
 
-import products from "../data/products";
+import localProducts from "../data/products";
+import { getProducts } from "../api/productApi";
 
 function Silver() {
+  const [products, setProducts] = useState(localProducts);
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const backendProducts = await getProducts();
+
+        if (backendProducts.length > 0) {
+          setProducts(backendProducts);
+        }
+      } catch (error) {
+        console.log("Using local products fallback:", error.message);
+      }
+    };
+
+    loadProducts();
+  }, []);
+
   const silverProducts = products.filter(
     (product) => product.category.toLowerCase() === "silver"
   );
@@ -17,16 +38,14 @@ function Silver() {
         <section className="category-page-banner silver-page-banner">
           <div className="category-page-banner-overlay">
             <div className="category-page-banner-content">
-              <p className="category-page-eyebrow">
-                Muliya Gold & Diamonds
-              </p>
+              <p className="category-page-eyebrow">Muliya Gold & Diamonds</p>
 
               <h1>Silver Collection</h1>
 
               <p>
                 Discover beautifully crafted silver jewellery, gifting
-                collections, traditional articles, and elegant designs for
-                every occasion.
+                collections, traditional articles, and elegant designs for every
+                occasion.
               </p>
             </div>
           </div>

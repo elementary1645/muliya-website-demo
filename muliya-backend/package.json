@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "seed": "node seeders/productSeeder.js",
+    "destroy": "node seeders/productSeeder.js --destroy"
   },
   "dependencies": {
     "cors": "^2.8.5",

@@ -1,12 +1,5 @@
-import { Link } from "react-router-dom";
-import {
-  ArrowRight,
-  Camera,
-  Eye,
-  Heart,
-  Scale,
-} from "lucide-react";
-
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowRight, Camera, Eye, Heart, Scale } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import productsData from "../data/products";
@@ -17,6 +10,8 @@ function TrendingProducts({
   subtitle = "Discover jewellery designs customers are exploring right now.",
   showViewAll = true,
 }) {
+  const navigate = useNavigate();
+
   const [wishlist, setWishlist] = useState([]);
   const [compare, setCompare] = useState([]);
 
@@ -24,23 +19,27 @@ function TrendingProducts({
     products || productsData.filter((product) => product.trending).slice(0, 8);
 
   useEffect(() => {
-    const savedWishlist =
-      JSON.parse(localStorage.getItem("muliyaWishlist")) || [];
-
-    const savedCompare =
-      JSON.parse(localStorage.getItem("muliyaCompare")) || [];
-
-    setWishlist(savedWishlist);
-    setCompare(savedCompare);
+    setWishlist(JSON.parse(localStorage.getItem("muliyaWishlist")) || []);
+    setCompare(JSON.parse(localStorage.getItem("muliyaCompare")) || []);
   }, []);
 
-  const toggleWishlist = (product) => {
-    const productExists = wishlist.some(
-      (wishlistProduct) => wishlistProduct.id === product.id
-    );
+  const getProductId = (product) => product._id || product.id;
 
-    const updatedWishlist = productExists
-      ? wishlist.filter((wishlistProduct) => wishlistProduct.id !== product.id)
+  const isWishlisted = (product) => {
+    const productId = getProductId(product);
+    return wishlist.some((item) => getProductId(item) === productId);
+  };
+
+  const isCompared = (product) => {
+    const productId = getProductId(product);
+    return compare.some((item) => getProductId(item) === productId);
+  };
+
+  const toggleWishlist = (product) => {
+    const productId = getProductId(product);
+
+    const updatedWishlist = isWishlisted(product)
+      ? wishlist.filter((item) => getProductId(item) !== productId)
       : [...wishlist, product];
 
     setWishlist(updatedWishlist);
@@ -49,16 +48,12 @@ function TrendingProducts({
   };
 
   const toggleCompare = (product) => {
-    const productExists = compare.some(
-      (compareProduct) => compareProduct.id === product.id
-    );
+    const productId = getProductId(product);
 
     let updatedCompare;
 
-    if (productExists) {
-      updatedCompare = compare.filter(
-        (compareProduct) => compareProduct.id !== product.id
-      );
+    if (isCompared(product)) {
+      updatedCompare = compare.filter((item) => getProductId(item) !== productId);
     } else {
       if (compare.length >= 3) {
         alert("You can compare only 3 jewellery items at a time.");
@@ -73,24 +68,8 @@ function TrendingProducts({
     window.dispatchEvent(new Event("compareUpdated"));
   };
 
-  const isWishlisted = (productId) => {
-    return wishlist.some((product) => product.id === productId);
-  };
-
-  const isCompared = (productId) => {
-    return compare.some((product) => product.id === productId);
-  };
-
-  const handleAIButton = (product) => {
-    console.log("AI similarity search requested for:", product.name);
-
-    const aiSection = document.getElementById("ai-search");
-
-    if (aiSection) {
-      aiSection.scrollIntoView({ behavior: "smooth" });
-    } else {
-      window.location.href = "/#ai-search";
-    }
+  const handleAIButton = () => {
+    navigate("/#ai-search");
   };
 
   return (
@@ -113,92 +92,96 @@ function TrendingProducts({
 
         {displayedProducts.length > 0 ? (
           <div className="products-grid">
-            {displayedProducts.map((product) => (
-              <article className="product-card" key={product.id}>
-                <div className="product-card-image">
-                  <img src={product.image} alt={product.name} />
+            {displayedProducts.map((product) => {
+              const productId = getProductId(product);
 
-                  <div className="product-card-badge">{product.category}</div>
+              return (
+                <article className="product-card" key={productId}>
+                  <div className="product-card-image">
+                    <img src={product.image} alt={product.name} />
 
-                  <div className="product-card-actions">
-                    <button
-                      type="button"
-                      title={
-                        isWishlisted(product.id)
-                          ? "Remove from Wishlist"
-                          : "Add to Wishlist"
-                      }
-                      className={
-                        isWishlisted(product.id)
-                          ? "wishlist-button active"
-                          : "wishlist-button"
-                      }
-                      onClick={() => toggleWishlist(product)}
-                    >
-                      <Heart
-                        size={18}
-                        fill={isWishlisted(product.id) ? "currentColor" : "none"}
-                      />
-                    </button>
+                    <div className="product-card-badge">{product.category}</div>
 
-                    <button
-                      type="button"
-                      title={
-                        isCompared(product.id)
-                          ? "Remove from Compare"
-                          : "Compare Jewellery"
-                      }
-                      className={
-                        isCompared(product.id)
-                          ? "compare-button active"
-                          : "compare-button"
-                      }
-                      onClick={() => toggleCompare(product)}
-                    >
-                      <Scale size={18} />
-                    </button>
+                    <div className="product-card-actions">
+                      <button
+                        type="button"
+                        title={
+                          isWishlisted(product)
+                            ? "Remove from Wishlist"
+                            : "Add to Wishlist"
+                        }
+                        className={
+                          isWishlisted(product)
+                            ? "wishlist-button active"
+                            : "wishlist-button"
+                        }
+                        onClick={() => toggleWishlist(product)}
+                      >
+                        <Heart
+                          size={18}
+                          fill={isWishlisted(product) ? "currentColor" : "none"}
+                        />
+                      </button>
 
-                    <button
-                      type="button"
-                      title="Find Similar with AI"
-                      onClick={() => handleAIButton(product)}
-                    >
-                      <Camera size={18} />
-                    </button>
-                  </div>
+                      <button
+                        type="button"
+                        title={
+                          isCompared(product)
+                            ? "Remove from Compare"
+                            : "Compare Jewellery"
+                        }
+                        className={
+                          isCompared(product)
+                            ? "compare-button active"
+                            : "compare-button"
+                        }
+                        onClick={() => toggleCompare(product)}
+                      >
+                        <Scale size={18} />
+                      </button>
 
-                  <Link to={`/product/${product.id}`} className="quick-view-btn">
-                    <Eye size={17} />
-                    View Details
-                  </Link>
-                </div>
+                      <button
+                        type="button"
+                        title="Find Similar with AI"
+                        onClick={handleAIButton}
+                      >
+                        <Camera size={18} />
+                      </button>
+                    </div>
 
-                <div className="product-card-content">
-                  <p className="product-card-code">{product.code}</p>
-
-                  <Link to={`/product/${product.id}`}>
-                    <h3>{product.name}</h3>
-                  </Link>
-
-                  <div className="product-card-meta">
-                    <span>{product.collection}</span>
-                    <span>{product.purity}</span>
-                  </div>
-
-                  <div className="product-card-bottom">
-                    <strong>{product.price}</strong>
-
-                    <Link
-                      to={`/product/${product.id}`}
-                      className="product-arrow-link"
-                      aria-label={`View ${product.name}`}
-                    >
-                      <ArrowRight size={18} />
+                    <Link to={`/product/${productId}`} className="quick-view-btn">
+                      <Eye size={17} />
+                      View Details
                     </Link>
                   </div>
-                </div>
-              </article>
-            ))}
+
+                  <div className="product-card-content">
+                    <p className="product-card-code">{product.code}</p>
+
+                    <Link to={`/product/${productId}`}>
+                      <h3>{product.name}</h3>
+                    </Link>
+
+                    <div className="product-card-meta">
+                      <span>{product.collection}</span>
+                      <span>{product.purity}</span>
+                    </div>
+
+                    <div className="product-card-bottom">
+                      <strong>{product.price}</strong>
+
+                      <Link
+                        to={`/product/${productId}`}
+                        className="product-arrow-link"
+                        aria-label={`View ${product.name}`}
+                      >
+                        <ArrowRight size={18} />
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         ) : (
           <div className="empty-products">

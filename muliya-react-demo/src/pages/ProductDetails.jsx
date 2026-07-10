@@ -7,168 +7,72 @@ import {
   Camera,
   MapPin,
   ArrowLeft,
-  X,
-  CalendarDays,
-  Clock,
   Share2,
-  Check,
 } from "lucide-react";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import TrendingProducts from "../components/TrendingProducts";
 
-import products from "../data/products";
+import { getProducts, getProductById } from "../api/productApi";
 
 function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const product = products.find((item) => item.id === Number(id));
+  const [product, setProduct] = useState(null);
+  const [allProducts, setAllProducts] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const [wishlist, setWishlist] = useState([]);
   const [compare, setCompare] = useState([]);
-  const [recentlyViewed, setRecentlyViewed] = useState([]);
 
-  const [linkCopied, setLinkCopied] = useState(false);
+  useEffect(() => {
+    const loadProduct = async () => {
+      try {
+        setLoading(true);
+        setError("");
 
-  const [showEnquiryModal, setShowEnquiryModal] = useState(false);
-  const [enquirySuccess, setEnquirySuccess] = useState(false);
+        const backendProduct = await getProductById(id);
+        const backendProducts = await getProducts();
 
-  const [showAppointmentModal, setShowAppointmentModal] = useState(false);
-  const [appointmentSuccess, setAppointmentSuccess] = useState(false);
+        setProduct(backendProduct);
+        setAllProducts(backendProducts);
+      } catch (requestError) {
+        console.error(requestError);
+        setError("Product not found.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const [selectedImage, setSelectedImage] = useState("");
-  const [showZoomModal, setShowZoomModal] = useState(false);
-
-  const [enquiryForm, setEnquiryForm] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    branch: "Bengaluru",
-    message: "",
-  });
-
-  const [appointmentForm, setAppointmentForm] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    branch: "Bengaluru",
-    date: "",
-    time: "",
-    message: "",
-  });
+    loadProduct();
+  }, [id]);
 
   useEffect(() => {
     setWishlist(JSON.parse(localStorage.getItem("muliyaWishlist")) || []);
     setCompare(JSON.parse(localStorage.getItem("muliyaCompare")) || []);
   }, []);
 
-  useEffect(() => {
-    if (!product) return;
-
-    const productImages = product.images || [product.image];
-
-    setSelectedImage(productImages[0]);
-    setShowZoomModal(false);
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }, [product]);
-
-  useEffect(() => {
-    if (!product) return;
-
-    const savedRecentlyViewed =
-      JSON.parse(localStorage.getItem("muliyaRecentlyViewed")) || [];
-
-    const previousProducts = savedRecentlyViewed.filter(
-      (item) => item.id !== product.id
-    );
-
-    setRecentlyViewed(previousProducts.slice(0, 6));
-
-    const updatedRecentlyViewed = [product, ...previousProducts].slice(0, 6);
-
-    localStorage.setItem(
-      "muliyaRecentlyViewed",
-      JSON.stringify(updatedRecentlyViewed)
-    );
-  }, [product]);
+  const getProductId = (item) => item?._id || item?.id;
 
   const isWishlisted = product
-    ? wishlist.some((item) => item.id === product.id)
+    ? wishlist.some((item) => getProductId(item) === getProductId(product))
     : false;
 
   const isCompared = product
-    ? compare.some((item) => item.id === product.id)
+    ? compare.some((item) => getProductId(item) === getProductId(product))
     : false;
-
-  const getSimilarProducts = () => {
-    if (!product) return [];
-
-    const otherProducts = products.filter((item) => item.id !== product.id);
-
-    return otherProducts
-      .map((item) => {
-        let score = 0;
-
-        if (item.category === product.category) score += 3;
-        if (item.type === product.type) score += 2;
-        if (item.collection === product.collection) score += 2;
-        if (item.purity === product.purity) score += 1;
-
-        return {
-          ...item,
-          similarityScore: score,
-        };
-      })
-      .filter((item) => item.similarityScore > 0)
-      .sort(
-        (firstProduct, secondProduct) =>
-          secondProduct.similarityScore - firstProduct.similarityScore
-      )
-      .slice(0, 4);
-  };
-
-  const similarProducts = getSimilarProducts();
-
-  const getTodayDate = () => {
-    const today = new Date();
-    const timezoneOffset = today.getTimezoneOffset() * 60000;
-
-    return new Date(today.getTime() - timezoneOffset)
-      .toISOString()
-      .split("T")[0];
-  };
-
-  const openDirections = () => {
-    const selectedBranch = appointmentForm.branch || "Bengaluru";
-
-    const branchAddresses = {
-      Bengaluru: "Muliya Gold & Diamonds, Jayanagar, Bengaluru, Karnataka",
-      Puttur: "Muliya Gold & Diamonds, Main Road, Puttur, Karnataka",
-      Madikeri: "Muliya Gold & Diamonds, Madikeri Town, Karnataka",
-    };
-
-    const destination = encodeURIComponent(
-      branchAddresses[selectedBranch] || branchAddresses.Bengaluru
-    );
-
-    window.open(
-      `https://www.google.com/maps/dir/?api=1&destination=${destination}`,
-      "_blank",
-      "noopener,noreferrer"
-    );
-  };
 
   const toggleWishlist = () => {
     if (!product) return;
 
+    const productId = getProductId(product);
+
     const updatedWishlist = isWishlisted
-      ? wishlist.filter((item) => item.id !== product.id)
+      ? wishlist.filter((item) => getProductId(item) !== productId)
       : [...wishlist, product];
 
     setWishlist(updatedWishlist);
@@ -179,10 +83,12 @@ function ProductDetails() {
   const toggleCompare = () => {
     if (!product) return;
 
+    const productId = getProductId(product);
+
     let updatedCompare;
 
     if (isCompared) {
-      updatedCompare = compare.filter((item) => item.id !== product.id);
+      updatedCompare = compare.filter((item) => getProductId(item) !== productId);
     } else {
       if (compare.length >= 3) {
         alert("You can compare only 3 jewellery items at a time.");
@@ -197,142 +103,47 @@ function ProductDetails() {
     window.dispatchEvent(new Event("compareUpdated"));
   };
 
-  const handleEnquiryChange = (e) => {
-    const { name, value } = e.target;
-
-    setEnquiryForm((currentForm) => ({
-      ...currentForm,
-      [name]: value,
-    }));
+  const handleAISearch = () => {
+    navigate("/#ai-search");
   };
 
-  const handleEnquirySubmit = (e) => {
-    e.preventDefault();
-
-    const existingEnquiries =
-      JSON.parse(localStorage.getItem("muliyaEnquiries")) || [];
-
-    const newEnquiry = {
-      id: Date.now(),
-      productId: product.id,
-      productName: product.name,
-      productCode: product.code,
-      productPrice: product.price,
-      ...enquiryForm,
-      submittedAt: new Date().toISOString(),
-    };
-
-    localStorage.setItem(
-      "muliyaEnquiries",
-      JSON.stringify([...existingEnquiries, newEnquiry])
-    );
-
-    setEnquirySuccess(true);
-
-    setEnquiryForm({
-      name: "",
-      phone: "",
-      email: "",
-      branch: "Bengaluru",
-      message: "",
-    });
-  };
-
-  const closeEnquiryModal = () => {
-    setShowEnquiryModal(false);
-    setEnquirySuccess(false);
-  };
-
-  const handleAppointmentChange = (e) => {
-    const { name, value } = e.target;
-
-    setAppointmentForm((currentForm) => ({
-      ...currentForm,
-      [name]: value,
-    }));
-  };
-
-  const handleAppointmentSubmit = (e) => {
-    e.preventDefault();
-
-    const existingAppointments =
-      JSON.parse(localStorage.getItem("muliyaAppointments")) || [];
-
-    const newAppointment = {
-      id: Date.now(),
-      productId: product.id,
-      productName: product.name,
-      productCode: product.code,
-      productImage: product.image,
-      ...appointmentForm,
-      status: "Pending",
-      submittedAt: new Date().toISOString(),
-    };
-
-    localStorage.setItem(
-      "muliyaAppointments",
-      JSON.stringify([...existingAppointments, newAppointment])
-    );
-
-    setAppointmentSuccess(true);
-
-    setAppointmentForm({
-      name: "",
-      phone: "",
-      email: "",
-      branch: "Bengaluru",
-      date: "",
-      time: "",
-      message: "",
-    });
-  };
-
-  const openAppointmentModal = () => {
-    setAppointmentSuccess(false);
-    setShowAppointmentModal(true);
-  };
-
-  const closeAppointmentModal = () => {
-    setShowAppointmentModal(false);
-    setAppointmentSuccess(false);
-  };
-
-  const handleShareProduct = async () => {
+  const handleShare = async () => {
     if (!product) return;
-
-    const productUrl = window.location.href;
 
     const shareData = {
       title: product.name,
-      text: `Check out ${product.name} - Jewellery Code: ${product.code}`,
-      url: productUrl,
+      text: `View ${product.name} from Muliya Gold & Diamonds`,
+      url: window.location.href,
     };
 
     try {
       if (navigator.share) {
         await navigator.share(shareData);
-        return;
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        alert("Product link copied to clipboard.");
       }
-
-      await navigator.clipboard.writeText(productUrl);
-
-      setLinkCopied(true);
-
-      setTimeout(() => {
-        setLinkCopied(false);
-      }, 2000);
-    } catch (error) {
-      if (error.name !== "AbortError") {
-        console.error("Unable to share product:", error);
-      }
+    } catch (shareError) {
+      console.error("Unable to share product:", shareError);
     }
   };
 
-  const handleAISearch = () => {
-    navigate("/#ai-search");
-  };
+  if (loading) {
+    return (
+      <div className="product-details-page">
+        <Navbar />
 
-  if (!product) {
+        <main className="not-found-page">
+          <h1>Loading Product...</h1>
+          <p>Retrieving jewellery details from the database.</p>
+        </main>
+
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error || !product) {
     return (
       <div className="product-details-page">
         <Navbar />
@@ -351,7 +162,32 @@ function ProductDetails() {
     );
   }
 
-  const productImages = product.images || [product.image];
+  const currentProductId = getProductId(product);
+
+  const similarProducts = allProducts
+    .filter((item) => getProductId(item) !== currentProductId)
+    .filter(
+      (item) =>
+        item.category === product.category ||
+        item.type === product.type ||
+        item.collection === product.collection ||
+        item.purity === product.purity
+    )
+    .slice(0, 4);
+
+  const recentlyViewed =
+    JSON.parse(localStorage.getItem("muliyaRecentlyViewed")) || [];
+
+  const previousRecentlyViewed = recentlyViewed.filter(
+    (item) => getProductId(item) !== currentProductId
+  );
+
+  localStorage.setItem(
+    "muliyaRecentlyViewed",
+    JSON.stringify([product, ...previousRecentlyViewed].slice(0, 6))
+  );
+
+  const displayedRecentlyViewed = previousRecentlyViewed.slice(0, 4);
 
   return (
     <div className="product-details-page">
@@ -366,38 +202,8 @@ function ProductDetails() {
             </Link>
 
             <div className="product-details-layout">
-              <div className="product-gallery">
-                <div
-                  className="product-main-image"
-                  onClick={() => setShowZoomModal(true)}
-                >
-                  <img
-                    src={selectedImage || product.image}
-                    alt={product.name}
-                  />
-
-                  <span>Click to zoom</span>
-                </div>
-
-                <div className="product-thumbnails">
-                  {productImages.map((image, index) => (
-                    <button
-                      type="button"
-                      key={`${image}-${index}`}
-                      className={
-                        selectedImage === image
-                          ? "product-thumbnail active"
-                          : "product-thumbnail"
-                      }
-                      onClick={() => setSelectedImage(image)}
-                    >
-                      <img
-                        src={image}
-                        alt={`${product.name} view ${index + 1}`}
-                      />
-                    </button>
-                  ))}
-                </div>
+              <div className="product-details-image">
+                <img src={product.image} alt={product.name} />
 
                 <button
                   type="button"
@@ -405,7 +211,7 @@ function ProductDetails() {
                   onClick={handleAISearch}
                 >
                   <Camera size={18} />
-                  <span>Find Similar with AI</span>
+                  <span>Find Similar Jewellery with AI</span>
                 </button>
               </div>
 
@@ -447,11 +253,7 @@ function ProductDetails() {
                 </div>
 
                 <div className="product-actions">
-                  <button
-                    type="button"
-                    className="primary-btn"
-                    onClick={() => setShowEnquiryModal(true)}
-                  >
+                  <button type="button" className="primary-btn">
                     Enquire Now
                   </button>
 
@@ -464,10 +266,7 @@ function ProductDetails() {
                     }
                     onClick={toggleWishlist}
                   >
-                    <Heart
-                      size={18}
-                      fill={isWishlisted ? "currentColor" : "none"}
-                    />
+                    <Heart size={18} fill={isWishlisted ? "currentColor" : "none"} />
                     {isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
                   </button>
 
@@ -486,15 +285,11 @@ function ProductDetails() {
 
                   <button
                     type="button"
-                    className={
-                      linkCopied
-                        ? "secondary-action-btn share-product-btn copied"
-                        : "secondary-action-btn share-product-btn"
-                    }
-                    onClick={handleShareProduct}
+                    className="secondary-action-btn share-product-btn"
+                    onClick={handleShare}
                   >
-                    {linkCopied ? <Check size={18} /> : <Share2 size={18} />}
-                    {linkCopied ? "Link Copied" : "Share Product"}
+                    <Share2 size={18} />
+                    Share Product
                   </button>
                 </div>
 
@@ -530,19 +325,11 @@ function ProductDetails() {
                   </div>
 
                   <div className="branch-actions">
-                    <button
-                      type="button"
-                      className="primary-btn"
-                      onClick={openAppointmentModal}
-                    >
+                    <button type="button" className="primary-btn">
                       Book Appointment
                     </button>
 
-                    <button
-                      type="button"
-                      className="secondary-btn"
-                      onClick={openDirections}
-                    >
+                    <button type="button" className="secondary-btn">
                       Get Directions
                     </button>
                   </div>
@@ -556,326 +343,20 @@ function ProductDetails() {
           <TrendingProducts
             products={similarProducts}
             title="Similar Jewellery"
-            subtitle="Explore related jewellery designs based on category, type, collection, and purity."
+            subtitle="Explore related jewellery designs from the database."
             showViewAll={false}
           />
         )}
 
-        {recentlyViewed.length > 0 && (
+        {displayedRecentlyViewed.length > 0 && (
           <TrendingProducts
-            products={recentlyViewed}
+            products={displayedRecentlyViewed}
             title="Recently Viewed"
             subtitle="Continue exploring jewellery designs you viewed recently."
             showViewAll={false}
           />
         )}
       </main>
-
-      {showEnquiryModal && (
-        <div className="modal-overlay">
-          <div className="enquiry-modal">
-            <button
-              type="button"
-              className="modal-close-btn"
-              onClick={closeEnquiryModal}
-              aria-label="Close enquiry modal"
-            >
-              <X size={22} />
-            </button>
-
-            {!enquirySuccess ? (
-              <>
-                <p className="section-eyebrow">Product Enquiry</p>
-                <h2>Enquire Now</h2>
-
-                <div className="modal-product-summary">
-                  <img src={product.image} alt={product.name} />
-
-                  <div>
-                    <h3>{product.name}</h3>
-                    <p>{product.code}</p>
-                    <strong>{product.price}</strong>
-                  </div>
-                </div>
-
-                <form className="enquiry-form" onSubmit={handleEnquirySubmit}>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Your Name"
-                    value={enquiryForm.name}
-                    onChange={handleEnquiryChange}
-                    required
-                  />
-
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Phone Number"
-                    value={enquiryForm.phone}
-                    onChange={handleEnquiryChange}
-                    required
-                  />
-
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Email Address"
-                    value={enquiryForm.email}
-                    onChange={handleEnquiryChange}
-                  />
-
-                  <select
-                    name="branch"
-                    value={enquiryForm.branch}
-                    onChange={handleEnquiryChange}
-                  >
-                    <option value="Bengaluru">Bengaluru</option>
-                    <option value="Puttur">Puttur</option>
-                    <option value="Madikeri">Madikeri</option>
-                  </select>
-
-                  <textarea
-                    name="message"
-                    placeholder="Message or enquiry details"
-                    value={enquiryForm.message}
-                    onChange={handleEnquiryChange}
-                    rows="4"
-                  />
-
-                  <button type="submit" className="primary-btn">
-                    Submit Enquiry
-                  </button>
-                </form>
-              </>
-            ) : (
-              <div className="enquiry-success">
-                <h2>Enquiry Submitted</h2>
-
-                <p>
-                  Thank you. Your enquiry has been saved successfully for this
-                  demo.
-                </p>
-
-                <button
-                  type="button"
-                  className="primary-btn"
-                  onClick={closeEnquiryModal}
-                >
-                  Close
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {showAppointmentModal && (
-        <div className="modal-overlay">
-          <div className="appointment-modal">
-            <button
-              type="button"
-              className="modal-close-btn"
-              onClick={closeAppointmentModal}
-              aria-label="Close appointment modal"
-            >
-              <X size={22} />
-            </button>
-
-            {!appointmentSuccess ? (
-              <>
-                <p className="section-eyebrow">Showroom Visit</p>
-                <h2>Book Appointment</h2>
-
-                <p className="appointment-modal-description">
-                  Select your preferred showroom, date, and time to request a
-                  visit for this jewellery design.
-                </p>
-
-                <div className="modal-product-summary">
-                  <img src={product.image} alt={product.name} />
-
-                  <div>
-                    <h3>{product.name}</h3>
-                    <p>{product.code}</p>
-                    <strong>{product.price}</strong>
-                  </div>
-                </div>
-
-                <form
-                  className="appointment-form"
-                  onSubmit={handleAppointmentSubmit}
-                >
-                  <div className="appointment-form-row">
-                    <div className="appointment-form-field">
-                      <label htmlFor="appointment-name">Name</label>
-
-                      <input
-                        id="appointment-name"
-                        type="text"
-                        name="name"
-                        placeholder="Your Name"
-                        value={appointmentForm.name}
-                        onChange={handleAppointmentChange}
-                        required
-                      />
-                    </div>
-
-                    <div className="appointment-form-field">
-                      <label htmlFor="appointment-phone">Phone Number</label>
-
-                      <input
-                        id="appointment-phone"
-                        type="tel"
-                        name="phone"
-                        placeholder="Phone Number"
-                        value={appointmentForm.phone}
-                        onChange={handleAppointmentChange}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="appointment-form-field">
-                    <label htmlFor="appointment-email">Email Address</label>
-
-                    <input
-                      id="appointment-email"
-                      type="email"
-                      name="email"
-                      placeholder="Email Address"
-                      value={appointmentForm.email}
-                      onChange={handleAppointmentChange}
-                    />
-                  </div>
-
-                  <div className="appointment-form-field">
-                    <label htmlFor="appointment-branch">Preferred Showroom</label>
-
-                    <select
-                      id="appointment-branch"
-                      name="branch"
-                      value={appointmentForm.branch}
-                      onChange={handleAppointmentChange}
-                      required
-                    >
-                      <option value="Bengaluru">Bengaluru</option>
-                      <option value="Puttur">Puttur</option>
-                      <option value="Madikeri">Madikeri</option>
-                    </select>
-                  </div>
-
-                  <div className="appointment-form-row">
-                    <div className="appointment-form-field">
-                      <label htmlFor="appointment-date">
-                        <CalendarDays size={16} />
-                        Preferred Date
-                      </label>
-
-                      <input
-                        id="appointment-date"
-                        type="date"
-                        name="date"
-                        min={getTodayDate()}
-                        value={appointmentForm.date}
-                        onChange={handleAppointmentChange}
-                        required
-                      />
-                    </div>
-
-                    <div className="appointment-form-field">
-                      <label htmlFor="appointment-time">
-                        <Clock size={16} />
-                        Preferred Time
-                      </label>
-
-                      <select
-                        id="appointment-time"
-                        name="time"
-                        value={appointmentForm.time}
-                        onChange={handleAppointmentChange}
-                        required
-                      >
-                        <option value="">Select Time</option>
-                        <option value="10:00 AM">10:00 AM</option>
-                        <option value="11:00 AM">11:00 AM</option>
-                        <option value="12:00 PM">12:00 PM</option>
-                        <option value="2:00 PM">2:00 PM</option>
-                        <option value="3:00 PM">3:00 PM</option>
-                        <option value="4:00 PM">4:00 PM</option>
-                        <option value="5:00 PM">5:00 PM</option>
-                        <option value="6:00 PM">6:00 PM</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="appointment-form-field">
-                    <label htmlFor="appointment-message">
-                      Message or Special Request
-                    </label>
-
-                    <textarea
-                      id="appointment-message"
-                      name="message"
-                      placeholder="Add any special request or additional details"
-                      value={appointmentForm.message}
-                      onChange={handleAppointmentChange}
-                      rows="4"
-                    />
-                  </div>
-
-                  <button type="submit" className="primary-btn">
-                    Request Appointment
-                  </button>
-                </form>
-              </>
-            ) : (
-              <div className="appointment-success">
-                <CalendarDays size={46} />
-
-                <h2>Appointment Requested</h2>
-
-                <p>
-                  Your showroom appointment request has been saved successfully
-                  for this demo.
-                </p>
-
-                <p className="appointment-success-note">
-                  A production website would send this request to the backend
-                  for showroom confirmation.
-                </p>
-
-                <button
-                  type="button"
-                  className="primary-btn"
-                  onClick={closeAppointmentModal}
-                >
-                  Close
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {showZoomModal && (
-        <div className="zoom-modal-overlay">
-          <button
-            type="button"
-            className="zoom-close-btn"
-            onClick={() => setShowZoomModal(false)}
-            aria-label="Close image zoom"
-          >
-            <X size={26} />
-          </button>
-
-          <img
-            src={selectedImage || product.image}
-            alt={product.name}
-            className="zoomed-product-image"
-          />
-        </div>
-      )}
 
       <Footer />
     </div>

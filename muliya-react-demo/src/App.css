@@ -2628,3 +2628,20 @@ h4 {
     width: 100%;
   }
 }
+/* FIX AI SIMILAR BUTTON SPACING */
+
+.ai-similar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.ai-similar-btn svg {
+  flex-shrink: 0;
+}
+
+.ai-similar-btn span {
+  display: inline-block;
+  line-height: 1;
+}
