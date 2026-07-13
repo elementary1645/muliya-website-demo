@@ -3,15 +3,22 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import connectDatabase from "./config/db.js";
+
 import productRoutes from "./routes/productRoutes.js";
+import enquiryRoutes from "./routes/enquiryRoutes.js";
+import metalRateRoutes from "./routes/metalRateRoutes.js";
+import appointmentRoutes from "./routes/appointmentRoutes.js";
 
 dotenv.config();
 
-connectDatabase();
-
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
@@ -24,8 +31,36 @@ app.get("/", (req, res) => {
 
 app.use("/api/products", productRoutes);
 
+app.use("/api/enquiries", enquiryRoutes);
+
+app.use("/api/metal-rates", metalRateRoutes);
+
+app.use("/api/appointments", appointmentRoutes);
+
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "API route not found.",
+  });
+});
+
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+const startServer = async () => {
+  try {
+    await connectDatabase();
+
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error(
+      "Unable to start server:",
+      error.message
+    );
+
+    process.exit(1);
+  }
+};
+
+startServer();

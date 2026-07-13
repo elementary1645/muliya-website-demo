@@ -16,34 +16,55 @@ function TrendingProducts({
   const [compare, setCompare] = useState([]);
 
   const displayedProducts =
-    products || productsData.filter((product) => product.trending).slice(0, 8);
+    products ||
+    productsData.filter((product) => product.trending).slice(0, 8);
 
   useEffect(() => {
-    setWishlist(JSON.parse(localStorage.getItem("muliyaWishlist")) || []);
-    setCompare(JSON.parse(localStorage.getItem("muliyaCompare")) || []);
+    setWishlist(
+      JSON.parse(localStorage.getItem("muliyaWishlist")) || []
+    );
+
+    setCompare(
+      JSON.parse(localStorage.getItem("muliyaCompare")) || []
+    );
   }, []);
 
-  const getProductId = (product) => product._id || product.id;
+  const getProductId = (product) => {
+    return product?._id || product?.id;
+  };
 
   const isWishlisted = (product) => {
     const productId = getProductId(product);
-    return wishlist.some((item) => getProductId(item) === productId);
+
+    return wishlist.some(
+      (item) => getProductId(item) === productId
+    );
   };
 
   const isCompared = (product) => {
     const productId = getProductId(product);
-    return compare.some((item) => getProductId(item) === productId);
+
+    return compare.some(
+      (item) => getProductId(item) === productId
+    );
   };
 
   const toggleWishlist = (product) => {
     const productId = getProductId(product);
 
     const updatedWishlist = isWishlisted(product)
-      ? wishlist.filter((item) => getProductId(item) !== productId)
+      ? wishlist.filter(
+          (item) => getProductId(item) !== productId
+        )
       : [...wishlist, product];
 
     setWishlist(updatedWishlist);
-    localStorage.setItem("muliyaWishlist", JSON.stringify(updatedWishlist));
+
+    localStorage.setItem(
+      "muliyaWishlist",
+      JSON.stringify(updatedWishlist)
+    );
+
     window.dispatchEvent(new Event("wishlistUpdated"));
   };
 
@@ -53,7 +74,9 @@ function TrendingProducts({
     let updatedCompare;
 
     if (isCompared(product)) {
-      updatedCompare = compare.filter((item) => getProductId(item) !== productId);
+      updatedCompare = compare.filter(
+        (item) => getProductId(item) !== productId
+      );
     } else {
       if (compare.length >= 3) {
         alert("You can compare only 3 jewellery items at a time.");
@@ -64,7 +87,12 @@ function TrendingProducts({
     }
 
     setCompare(updatedCompare);
-    localStorage.setItem("muliyaCompare", JSON.stringify(updatedCompare));
+
+    localStorage.setItem(
+      "muliyaCompare",
+      JSON.stringify(updatedCompare)
+    );
+
     window.dispatchEvent(new Event("compareUpdated"));
   };
 
@@ -78,7 +106,9 @@ function TrendingProducts({
         <div className="products-section-header">
           <div>
             <p className="section-eyebrow">Discover Jewellery</p>
+
             <h2 className="section-title">{title}</h2>
+
             <p className="section-description">{subtitle}</p>
           </div>
 
@@ -96,11 +126,19 @@ function TrendingProducts({
               const productId = getProductId(product);
 
               return (
-                <article className="product-card" key={productId}>
+                <article
+                  className="product-card"
+                  key={productId}
+                >
                   <div className="product-card-image">
-                    <img src={product.image} alt={product.name} />
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                    />
 
-                    <div className="product-card-badge">{product.category}</div>
+                    <div className="product-card-badge">
+                      {product.category}
+                    </div>
 
                     <div className="product-card-actions">
                       <button
@@ -119,7 +157,11 @@ function TrendingProducts({
                       >
                         <Heart
                           size={18}
-                          fill={isWishlisted(product) ? "currentColor" : "none"}
+                          fill={
+                            isWishlisted(product)
+                              ? "currentColor"
+                              : "none"
+                          }
                         />
                       </button>
 
@@ -149,14 +191,19 @@ function TrendingProducts({
                       </button>
                     </div>
 
-                    <Link to={`/product/${productId}`} className="quick-view-btn">
+                    <Link
+                      to={`/product/${productId}`}
+                      className="quick-view-btn"
+                    >
                       <Eye size={17} />
                       View Details
                     </Link>
                   </div>
 
                   <div className="product-card-content">
-                    <p className="product-card-code">{product.code}</p>
+                    <p className="product-card-code">
+                      {product.code}
+                    </p>
 
                     <Link to={`/product/${productId}`}>
                       <h3>{product.name}</h3>
@@ -186,7 +233,10 @@ function TrendingProducts({
         ) : (
           <div className="empty-products">
             <h3>No jewellery found</h3>
-            <p>No products are currently available in this category.</p>
+
+            <p>
+              No products are currently available in this category.
+            </p>
           </div>
         )}
       </div>

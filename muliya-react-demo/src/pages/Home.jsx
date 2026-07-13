@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import Navbar from "../components/Navbar";
 import HeroSlider from "../components/HeroSlider";
+import MetalRates from "../components/MetalRates";
 import Categories from "../components/Categories";
 import FeaturedCollections from "../components/FeaturedCollections";
 import TrendingProducts from "../components/TrendingProducts";
@@ -12,22 +13,30 @@ import Testimonials from "../components/Testimonials";
 import InstagramFeed from "../components/InstagramFeed";
 import Footer from "../components/Footer";
 
-import localProducts from "../data/products";
 import { getProducts } from "../api/productApi";
 
 function Home() {
-  const [products, setProducts] = useState(localProducts);
+  const [products, setProducts] = useState([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+  const [productError, setProductError] = useState("");
 
   useEffect(() => {
     const loadProducts = async () => {
       try {
+        setLoadingProducts(true);
+        setProductError("");
+
         const backendProducts = await getProducts();
 
-        if (backendProducts.length > 0) {
-          setProducts(backendProducts);
-        }
+        setProducts(backendProducts);
       } catch (error) {
-        console.log("Using local products fallback:", error.message);
+        console.error("Unable to load homepage products:", error);
+
+        setProductError(
+          "Unable to load products from the database."
+        );
+      } finally {
+        setLoadingProducts(false);
       }
     };
 
@@ -45,11 +54,38 @@ function Home() {
       <main>
         <HeroSlider />
 
+        <MetalRates />
+
         <Categories />
 
         <FeaturedCollections />
 
-        <TrendingProducts products={trendingProducts} />
+        {loadingProducts ? (
+          <section className="homepage-product-status">
+            <div className="container">
+              <h2>Loading Jewellery...</h2>
+
+              <p>
+                Retrieving products from the online database.
+              </p>
+            </div>
+          </section>
+        ) : productError ? (
+          <section className="homepage-product-status">
+            <div className="container">
+              <h2>Products unavailable</h2>
+
+              <p>{productError}</p>
+            </div>
+          </section>
+        ) : (
+          <TrendingProducts
+            products={trendingProducts}
+            title="Trending Jewellery"
+            subtitle="Discover jewellery designs customers are exploring right now."
+            showViewAll={true}
+          />
+        )}
 
         <AIImageSearch />
 

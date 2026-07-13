@@ -2645,3 +2645,1298 @@ h4 {
   display: inline-block;
   line-height: 1;
 }
+/* BACKEND SEARCH STATUS */
+
+.search-fallback-message {
+  margin-top: 10px;
+  color: #9a6515;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.search-loading-section {
+  min-height: 340px;
+  padding: 60px 0 90px;
+  background: var(--white);
+}
+
+.search-loading-card {
+  padding: 55px 30px;
+  text-align: center;
+  border: 1px solid var(--light-grey);
+  background: var(--light-cream);
+}
+
+.search-loading-card h2 {
+  margin-bottom: 8px;
+  color: var(--primary-dark);
+  font-size: 34px;
+}
+
+.search-loading-card p {
+  color: var(--text-grey);
+  font-size: 13px;
+}
+
+.search-filter-grid select:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+/* SEARCH RESULTS PRODUCT GRID POSITION FIX */
+
+.search-results-page .search-results-banner {
+  padding: 65px 0;
+}
+
+.search-results-page .search-filter-section {
+  padding: 35px 0 0;
+}
+
+.search-results-page .trending-products-section {
+  padding-top: 35px;
+}
+
+.search-results-page .products-section-header {
+  margin-bottom: 28px;
+}
+
+.search-results-page .products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+@media (max-width: 1100px) {
+  .search-results-page .products-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 800px) {
+  .search-results-page .products-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .search-results-page .products-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* =========================================================
+   DATABASE ENQUIRY MODAL
+   ========================================================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 4000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(20, 8, 10, 0.72);
+}
+
+.enquiry-modal {
+  position: relative;
+
+  width: min(620px, 100%);
+  max-height: 92vh;
+
+  overflow-y: auto;
+
+  padding: 34px;
+
+  background: var(--white);
+
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+
+  width: 40px;
+  height: 40px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid var(--light-grey);
+
+  background: var(--white);
+  color: var(--primary);
+
+  transition: var(--transition);
+}
+
+.modal-close-btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--white);
+}
+
+.modal-close-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.enquiry-modal h2 {
+  margin-bottom: 20px;
+
+  color: var(--primary-dark);
+
+  font-size: 38px;
+}
+
+.modal-product-summary {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 18px;
+
+  margin-bottom: 24px;
+  padding: 14px;
+
+  border: 1px solid var(--light-grey);
+
+  background: var(--light-cream);
+}
+
+.modal-product-summary img {
+  width: 110px;
+  height: 110px;
+
+  object-fit: cover;
+}
+
+.modal-product-summary h3 {
+  margin-bottom: 4px;
+
+  color: var(--primary-dark);
+
+  font-size: 25px;
+  line-height: 1.1;
+}
+
+.modal-product-summary p {
+  margin-bottom: 5px;
+
+  color: var(--gold-dark);
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.modal-product-summary strong {
+  color: var(--primary);
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 23px;
+}
+
+.enquiry-form {
+  display: grid;
+  gap: 14px;
+}
+
+.enquiry-form-field {
+  display: grid;
+  gap: 7px;
+}
+
+.enquiry-form-field label {
+  color: var(--primary-dark);
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.enquiry-form input,
+.enquiry-form select,
+.enquiry-form textarea {
+  width: 100%;
+
+  padding: 13px 14px;
+
+  border: 1px solid var(--light-grey);
+  outline: none;
+
+  background: var(--white);
+  color: var(--dark-grey);
+
+  font: inherit;
+  font-size: 13px;
+}
+
+.enquiry-form textarea {
+  resize: vertical;
+}
+
+.enquiry-form input:focus,
+.enquiry-form select:focus,
+.enquiry-form textarea:focus {
+  border-color: var(--gold);
+}
+
+.enquiry-error-message {
+  padding: 11px 13px;
+
+  border: 1px solid #e2aaaa;
+
+  background: #fff2f2;
+  color: #a51f1f;
+
+  font-size: 12px;
+}
+
+.enquiry-submit-btn {
+  width: 100%;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.enquiry-submit-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.enquiry-success {
+  padding: 45px 10px 25px;
+
+  text-align: center;
+}
+
+.enquiry-success h2 {
+  margin-bottom: 12px;
+}
+
+.enquiry-success p {
+  max-width: 470px;
+
+  margin: 0 auto 12px;
+
+  color: var(--text-grey);
+
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.enquiry-success .primary-btn {
+  margin-top: 14px;
+}
+
+@media (max-width: 600px) {
+  .enquiry-modal {
+    padding: 28px 20px;
+  }
+
+  .enquiry-modal h2 {
+    font-size: 32px;
+  }
+
+  .modal-product-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-product-summary img {
+    width: 100%;
+    height: 230px;
+  }
+}
+/* =========================================================
+   LIVE GOLD & SILVER PRICES
+   ========================================================= */
+
+.metal-rates-section {
+  padding: 80px 0;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(248, 242, 232, 0.96),
+      rgba(255, 255, 255, 0.98)
+    );
+}
+
+.metal-rates-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 34px;
+}
+
+.metal-rate-refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 44px;
+  padding: 0 18px;
+
+  border: 1px solid var(--primary);
+  background: var(--white);
+  color: var(--primary);
+
+  font-size: 12px;
+  font-weight: 700;
+
+  transition: var(--transition);
+}
+
+.metal-rate-refresh-btn:hover:not(:disabled) {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.metal-rate-refresh-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.spinning {
+  animation: metal-rate-spin 0.9s linear infinite;
+}
+
+@keyframes metal-rate-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.metal-rates-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.metal-rate-card {
+  position: relative;
+  overflow: hidden;
+
+  min-height: 260px;
+  padding: 34px;
+
+  border: 1px solid rgba(183, 149, 82, 0.28);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(248, 242, 232, 0.96)
+    );
+
+  box-shadow: 0 18px 50px rgba(69, 29, 35, 0.08);
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.metal-rate-card::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 5px;
+
+  background: linear-gradient(
+    90deg,
+    var(--primary),
+    var(--gold)
+  );
+}
+
+.metal-rate-card:hover {
+  transform: translateY(-6px);
+
+  box-shadow: 0 24px 60px rgba(69, 29, 35, 0.13);
+}
+
+.metal-rate-card-icon {
+  width: 52px;
+  height: 52px;
+
+  display: grid;
+  place-items: center;
+
+  margin-bottom: 22px;
+
+  border: 1px solid rgba(183, 149, 82, 0.45);
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--primary);
+}
+
+.metal-rate-symbol {
+  margin-bottom: 6px;
+
+  color: var(--gold-dark);
+
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+}
+
+.metal-rate-card h3 {
+  margin-bottom: 18px;
+
+  color: var(--primary-dark);
+
+  font-size: 34px;
+  line-height: 1;
+}
+
+.metal-rate-price {
+  margin-bottom: 6px;
+
+  color: var(--primary);
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(36px, 5vw, 58px);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.metal-rate-card > span {
+  color: var(--text-grey);
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.metal-rates-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 18px;
+
+  margin-top: 24px;
+  padding: 16px 18px;
+
+  border: 1px solid var(--light-grey);
+
+  background: var(--white);
+}
+
+.metal-rates-footer p {
+  margin: 0;
+
+  color: var(--text-grey);
+
+  font-size: 12px;
+}
+
+.metal-rates-footer strong {
+  color: var(--primary);
+}
+
+.metal-rates-disclaimer {
+  margin-top: 16px;
+  padding: 16px 18px;
+
+  border-left: 4px solid var(--gold);
+
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--text-grey);
+
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.metal-rate-warning {
+  margin-top: 16px;
+  padding: 13px 16px;
+
+  border: 1px solid #e4c48f;
+
+  background: #fff7e7;
+  color: #8a5b17;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.metal-rates-status {
+  display: grid;
+  place-items: center;
+
+  min-height: 250px;
+  padding: 45px 24px;
+
+  text-align: center;
+
+  border: 1px solid var(--light-grey);
+
+  background: var(--white);
+}
+
+.metal-rates-status svg {
+  margin-bottom: 16px;
+
+  color: var(--primary);
+}
+
+.metal-rates-status h3 {
+  margin-bottom: 8px;
+
+  color: var(--primary-dark);
+
+  font-size: 30px;
+}
+
+.metal-rates-status p {
+  max-width: 500px;
+
+  color: var(--text-grey);
+
+  font-size: 13px;
+}
+
+.metal-rates-error {
+  border-color: #e2aaaa;
+  background: #fff7f7;
+}
+
+@media (max-width: 850px) {
+  .metal-rates-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .metal-rates-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .metal-rate-refresh-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .metal-rates-section {
+    padding: 60px 0;
+  }
+
+  .metal-rate-card {
+    min-height: auto;
+    padding: 28px 22px;
+  }
+
+  .metal-rate-card h3 {
+    font-size: 30px;
+  }
+
+  .metal-rate-price {
+    font-size: 40px;
+  }
+
+  .metal-rates-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+/* =========================================================
+   APPOINTMENT BOOKING MODAL
+   ========================================================= */
+
+.appointment-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(20, 12, 14, 0.72);
+  backdrop-filter: blur(7px);
+
+  overflow-y: auto;
+}
+
+.appointment-modal {
+  position: relative;
+
+  width: 100%;
+  max-width: 820px;
+  max-height: calc(100vh - 48px);
+
+  padding: 42px;
+
+  overflow-y: auto;
+
+  background: #ffffff;
+
+  border: 1px solid rgba(183, 149, 82, 0.3);
+
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, 0.28);
+
+  animation: appointmentModalOpen 0.25s ease;
+}
+
+@keyframes appointmentModalOpen {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================================
+   CLOSE BUTTON
+   ========================================================= */
+
+.appointment-modal-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid var(--light-grey);
+  border-radius: 50%;
+
+  background: #ffffff;
+  color: var(--primary);
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.appointment-modal-close:hover {
+  background: var(--primary);
+  color: #ffffff;
+
+  transform: rotate(90deg);
+}
+
+/* =========================================================
+   MODAL HEADER
+   ========================================================= */
+
+.appointment-modal-header {
+  padding-right: 55px;
+  margin-bottom: 28px;
+}
+
+.appointment-modal-header .section-eyebrow {
+  margin-bottom: 8px;
+}
+
+.appointment-modal-header h2 {
+  margin: 0 0 10px;
+
+  color: var(--primary-dark);
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(34px, 5vw, 48px);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.appointment-modal-header > p:last-child {
+  max-width: 620px;
+
+  margin: 0;
+
+  color: var(--text-grey);
+
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* =========================================================
+   SELECTED PRODUCT SUMMARY
+   ========================================================= */
+
+.appointment-product-summary {
+  display: flex;
+  align-items: center;
+
+  gap: 18px;
+
+  margin-bottom: 28px;
+  padding: 16px;
+
+  border: 1px solid rgba(183, 149, 82, 0.28);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(248, 242, 232, 0.85),
+      rgba(255, 255, 255, 0.98)
+    );
+}
+
+.appointment-product-summary img {
+  width: 90px;
+  height: 90px;
+
+  flex-shrink: 0;
+
+  object-fit: cover;
+
+  border: 1px solid var(--light-grey);
+}
+
+.appointment-product-summary span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: var(--gold-dark);
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1.4px;
+
+  text-transform: uppercase;
+}
+
+.appointment-product-summary h3 {
+  margin: 0 0 5px;
+
+  color: var(--primary-dark);
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 25px;
+  line-height: 1.1;
+}
+
+.appointment-product-summary p {
+  margin: 0;
+
+  color: var(--text-grey);
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   APPOINTMENT FORM
+   ========================================================= */
+
+.appointment-form {
+  width: 100%;
+}
+
+.appointment-form-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 20px;
+}
+
+.appointment-form-group {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+
+  margin-bottom: 20px;
+}
+
+.appointment-form-group label {
+  color: var(--primary-dark);
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.appointment-form-group input,
+.appointment-form-group select,
+.appointment-form-group textarea {
+  width: 100%;
+
+  border: 1px solid #ddd6d2;
+
+  background: #ffffff;
+
+  color: var(--text-dark);
+
+  font-family: inherit;
+  font-size: 13px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.appointment-form-group input,
+.appointment-form-group select {
+  min-height: 48px;
+
+  padding: 0 14px;
+}
+
+.appointment-form-group textarea {
+  min-height: 120px;
+
+  padding: 14px;
+
+  resize: vertical;
+}
+
+.appointment-form-group input::placeholder,
+.appointment-form-group textarea::placeholder {
+  color: #9a9491;
+}
+
+.appointment-form-group input:focus,
+.appointment-form-group select:focus,
+.appointment-form-group textarea:focus {
+  border-color: var(--gold);
+
+  box-shadow:
+    0 0 0 3px rgba(183, 149, 82, 0.13);
+}
+
+/* =========================================================
+   INPUTS WITH ICONS
+   ========================================================= */
+
+.appointment-input-icon {
+  position: relative;
+
+  width: 100%;
+}
+
+.appointment-input-icon svg {
+  position: absolute;
+
+  top: 50%;
+  left: 14px;
+
+  z-index: 2;
+
+  transform: translateY(-50%);
+
+  pointer-events: none;
+
+  color: var(--gold-dark);
+}
+
+.appointment-input-icon input,
+.appointment-input-icon select {
+  padding-left: 42px;
+}
+
+/* =========================================================
+   FORM ERROR
+   ========================================================= */
+
+.appointment-form-error {
+  margin-bottom: 20px;
+  padding: 13px 15px;
+
+  border: 1px solid #e2aaaa;
+
+  background: #fff4f4;
+
+  color: #a33636;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  line-height: 1.5;
+}
+
+/* =========================================================
+   FORM BUTTONS
+   ========================================================= */
+
+.appointment-form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  padding-top: 6px;
+}
+
+.appointment-form-actions button {
+  min-width: 155px;
+}
+
+.appointment-form-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/* =========================================================
+   SUCCESS MESSAGE
+   ========================================================= */
+
+.appointment-success {
+  min-height: 300px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px 24px;
+
+  text-align: center;
+
+  border: 1px solid rgba(183, 149, 82, 0.3);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(248, 242, 232, 0.82),
+      rgba(255, 255, 255, 0.98)
+    );
+}
+
+.appointment-success svg {
+  margin-bottom: 18px;
+
+  color: var(--gold-dark);
+}
+
+.appointment-success h3 {
+  margin: 0 0 10px;
+
+  color: var(--primary-dark);
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 34px;
+}
+
+.appointment-success p {
+  max-width: 520px;
+
+  margin: 0 0 24px;
+
+  color: var(--text-grey);
+
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+.appointment-modal::-webkit-scrollbar {
+  width: 7px;
+}
+
+.appointment-modal::-webkit-scrollbar-track {
+  background: #f3efec;
+}
+
+.appointment-modal::-webkit-scrollbar-thumb {
+  background: rgba(183, 149, 82, 0.7);
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 800px) {
+  .appointment-modal-overlay {
+    align-items: flex-start;
+
+    padding: 18px;
+  }
+
+  .appointment-modal {
+    max-height: none;
+
+    margin: 20px 0;
+
+    padding: 36px 28px;
+  }
+
+  .appointment-form-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 550px) {
+  .appointment-modal-overlay {
+    padding: 0;
+  }
+
+  .appointment-modal {
+    min-height: 100vh;
+    max-height: none;
+
+    margin: 0;
+
+    padding: 72px 20px 30px;
+
+    border: none;
+  }
+
+  .appointment-modal-close {
+    top: 16px;
+    right: 16px;
+  }
+
+  .appointment-modal-header {
+    padding-right: 0;
+  }
+
+  .appointment-modal-header h2 {
+    font-size: 36px;
+  }
+
+  .appointment-product-summary {
+    align-items: flex-start;
+
+    padding: 13px;
+  }
+
+  .appointment-product-summary img {
+    width: 72px;
+    height: 72px;
+  }
+
+  .appointment-product-summary h3 {
+    font-size: 21px;
+  }
+
+  .appointment-form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .appointment-form-actions button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .appointment-success {
+    min-height: 400px;
+
+    padding: 30px 18px;
+  }
+}
+.homepage-product-status {
+  min-height: 300px;
+  padding: 80px 0;
+  text-align: center;
+  background: var(--white);
+}
+
+.homepage-product-status h2 {
+  margin-bottom: 8px;
+  color: var(--primary-dark);
+  font-size: 36px;
+}
+
+.homepage-product-status p {
+  color: var(--text-grey);
+  font-size: 14px;
+}
+/* =========================================================
+   BRANCH PRODUCT AVAILABILITY PAGE
+   ========================================================= */
+
+.branch-products-banner {
+  padding: 70px 0 55px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(248, 242, 232, 0.96),
+      rgba(255, 255, 255, 0.98)
+    );
+}
+
+.branch-products-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+  margin-top: 35px;
+}
+
+.branch-products-heading h1 {
+  margin-bottom: 12px;
+  color: var(--primary-dark);
+  font-size: clamp(38px, 6vw, 60px);
+}
+
+.branch-products-heading > div > p:last-child {
+  max-width: 700px;
+  color: var(--text-grey);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.branch-location-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 46px;
+  padding: 0 18px;
+  border: 1px solid var(--gold);
+  background: var(--white);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.branch-products-filter-section {
+  padding: 36px 0 5px;
+  background: var(--white);
+}
+
+.branch-products-filter-card {
+  display: grid;
+  grid-template-columns: 1fr 240px auto;
+  gap: 14px;
+  padding: 22px;
+  border: 1px solid var(--light-grey);
+  background: var(--light-cream);
+}
+
+.branch-search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid var(--light-grey);
+  background: var(--white);
+}
+
+.branch-search-box svg {
+  flex-shrink: 0;
+  color: var(--primary);
+}
+
+.branch-search-box input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--dark-grey);
+  font: inherit;
+  font-size: 13px;
+}
+
+.branch-products-filter-card select {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid var(--light-grey);
+  outline: none;
+  background: var(--white);
+  color: var(--dark-grey);
+  font-size: 13px;
+}
+
+.branch-search-box:focus-within,
+.branch-products-filter-card select:focus {
+  border-color: var(--gold);
+}
+
+.branch-products-count {
+  margin-top: 17px;
+  color: var(--text-grey);
+  font-size: 13px;
+}
+
+.branch-products-status {
+  min-height: 400px;
+  padding: 90px 0;
+  text-align: center;
+}
+
+.branch-products-status h2 {
+  margin-bottom: 9px;
+  color: var(--primary-dark);
+  font-size: 38px;
+}
+
+.branch-products-status p {
+  color: var(--text-grey);
+  font-size: 14px;
+}
+
+@media (max-width: 850px) {
+  .branch-products-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .branch-products-filter-card {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .branch-products-filter-card .clear-filter-btn {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .branch-products-banner {
+    padding: 50px 0 40px;
+  }
+
+  .branch-products-filter-card {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .branch-products-filter-card .clear-filter-btn {
+    grid-column: auto;
+    width: 100%;
+  }
+
+  .branch-location-badge {
+    width: 100%;
+    justify-content: center;
+  }
+}
