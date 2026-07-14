@@ -8,6 +8,9 @@ import productRoutes from "./routes/productRoutes.js";
 import enquiryRoutes from "./routes/enquiryRoutes.js";
 import metalRateRoutes from "./routes/metalRateRoutes.js";
 import appointmentRoutes from "./routes/appointmentRoutes.js";
+import instagramRoutes from "./routes/instagramRoutes.js";
+import chatbotRoutes from "./routes/chatbotRoutes.js";
+import expertRequestRoutes from "./routes/expertRequestRoutes.js";
 
 dotenv.config();
 
@@ -30,13 +33,16 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/products", productRoutes);
-
 app.use("/api/enquiries", enquiryRoutes);
-
 app.use("/api/metal-rates", metalRateRoutes);
-
 app.use("/api/appointments", appointmentRoutes);
+app.use("/api/instagram", instagramRoutes);
+app.use("/api/chat", chatbotRoutes);
+app.use("/api/expert-requests", expertRequestRoutes);
 
+/*
+  Keep this 404 handler after every API route.
+*/
 app.use((req, res) => {
   res.status(404).json({
     success: false,
