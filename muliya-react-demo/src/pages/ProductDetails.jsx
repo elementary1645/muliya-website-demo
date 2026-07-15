@@ -193,9 +193,9 @@ function ProductDetails() {
     window.dispatchEvent(new Event("compareUpdated"));
   };
 
-  const handleAISearch = () => {
-    navigate("/#ai-search");
-  };
+   const handleAISearch = () => {
+  navigate("/image-search");
+};
 
   const handleShare = async () => {
     if (!product) {

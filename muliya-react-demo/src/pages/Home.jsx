@@ -12,6 +12,7 @@ import StoreLocator from "../components/StoreLocator";
 import Testimonials from "../components/Testimonials";
 import InstagramFeed from "../components/InstagramFeed";
 import Footer from "../components/Footer";
+import GoldPredictionPreview from "../components/GoldPredictionPreview";
 
 import { getProducts } from "../api/productApi";
 
@@ -88,6 +89,8 @@ function Home() {
         )}
 
         <AIImageSearch />
+
+        <GoldPredictionPreview />
 
         <WhyChooseUs />
 

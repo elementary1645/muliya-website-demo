@@ -3,6 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import connectDatabase from "./config/db.js";
+import cookieParser from "cookie-parser";
+
 
 import productRoutes from "./routes/productRoutes.js";
 import enquiryRoutes from "./routes/enquiryRoutes.js";
@@ -11,6 +13,9 @@ import appointmentRoutes from "./routes/appointmentRoutes.js";
 import instagramRoutes from "./routes/instagramRoutes.js";
 import chatbotRoutes from "./routes/chatbotRoutes.js";
 import expertRequestRoutes from "./routes/expertRequestRoutes.js";
+import imageSearchRoutes from "./routes/imageSearchRoutes.js";
+import goldPredictionRoutes from "./routes/goldPredictionRoutes.js";
+import adminAuthRoutes from "./routes/adminAuthRoutes.js";
 
 dotenv.config();
 
@@ -39,6 +44,18 @@ app.use("/api/appointments", appointmentRoutes);
 app.use("/api/instagram", instagramRoutes);
 app.use("/api/chat", chatbotRoutes);
 app.use("/api/expert-requests", expertRequestRoutes);
+app.use("/api/image-search", imageSearchRoutes);
+app.use(cookieParser());
+
+app.use(
+  "/api/gold-prediction",
+  goldPredictionRoutes
+);
+
+app.use(
+  "/api/admin/auth",
+  adminAuthRoutes
+);
 
 /*
   Keep this 404 handler after every API route.

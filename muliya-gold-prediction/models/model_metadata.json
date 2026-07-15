@@ -1,0 +1,379 @@
+{
+  "modelType": "RandomForest",
+  "ticker": "GC=F",
+  "currency": "USD",
+  "unit": "USD per troy ounce",
+  "predictionTarget": "Next trading-day logarithmic return",
+  "predictionConversion": "Predicted price = current close × exp(predicted logarithmic return)",
+  "dataSource": "Yahoo Finance via yfinance",
+  "dataStartDate": "2010-01-04",
+  "dataEndDate": "2026-07-15",
+  "rawRowCount": 4156,
+  "preparedRowCount": 3901,
+  "trainingRowCount": 3120,
+  "testingRowCount": 781,
+  "trainingStartDate": "2010-03-16",
+  "trainingEndDate": "2023-04-17",
+  "testingStartDate": "2023-04-18",
+  "testingEndDate": "2026-07-14",
+  "featureColumns": [
+    "Return_1D",
+    "Return_2D",
+    "Return_3D",
+    "Return_5D",
+    "Return_10D",
+    "Return_Lag_1",
+    "Return_Lag_2",
+    "Return_Lag_3",
+    "Return_Lag_5",
+    "Return_Lag_10",
+    "Close_MA5_Ratio",
+    "Close_MA10_Ratio",
+    "Close_MA20_Ratio",
+    "Close_MA50_Ratio",
+    "MA5_MA20_Ratio",
+    "MA10_MA50_Ratio",
+    "Close_EMA10_Ratio",
+    "Close_EMA20_Ratio",
+    "Volatility_5",
+    "Volatility_10",
+    "Volatility_20",
+    "True_Range_Ratio",
+    "Open_Close_Return",
+    "High_Low_Range",
+    "Close_Position_In_Range",
+    "Volume_Change",
+    "Volume_MA20_Ratio",
+    "Momentum_5",
+    "Momentum_10",
+    "DayOfWeek",
+    "Month"
+  ],
+  "holdoutResults": {
+    "RandomForest": {
+      "returnMAE": 0.00880382652648596,
+      "returnRMSE": 0.012409041477517346,
+      "returnR2": 0.01453729677514648,
+      "priceMAE": 29.289848801492727,
+      "priceRMSE": 47.60111094001338,
+      "priceMAPE": 0.8808267700861936,
+      "directionalAccuracy": 27.91293213828425,
+      "activeDirectionalAccuracy": 23.54609929078014,
+      "residualStandardDeviation": 0.012389145157226436
+    },
+    "GradientBoosting": {
+      "returnMAE": 0.00884975560297649,
+      "returnRMSE": 0.012471050806943778,
+      "returnR2": 0.0046637601484281754,
+      "priceMAE": 29.499512708905485,
+      "priceRMSE": 47.98180293959973,
+      "priceMAPE": 0.885582935306938,
+      "directionalAccuracy": 27.784891165172855,
+      "activeDirectionalAccuracy": 22.69503546099291,
+      "residualStandardDeviation": 0.01245875869428635
+    }
+  },
+  "crossValidationResults": {
+    "RandomForest": {
+      "averageMetrics": {
+        "returnMAE": 0.007052357458289675,
+        "returnRMSE": 0.00991394142368919,
+        "returnR2": -0.020292595405861702,
+        "priceMAE": 10.438836394210693,
+        "priceRMSE": 14.775428385817321,
+        "priceMAPE": 0.70554229161341,
+        "directionalAccuracy": 27.038461538461537,
+        "activeDirectionalAccuracy": 22.681072642474977,
+        "residualStandardDeviation": 0.009893577500223854
+      },
+      "foldMetrics": [
+        {
+          "returnMAE": 0.0081188270524182,
+          "returnRMSE": 0.011791616627604721,
+          "returnR2": -0.03202075940095339,
+          "priceMAE": 11.634344603268927,
+          "priceRMSE": 16.769381366984526,
+          "priceMAPE": 0.8135970866457423,
+          "directionalAccuracy": 32.69230769230769,
+          "activeDirectionalAccuracy": 32.01754385964912,
+          "residualStandardDeviation": 0.011742559421540691,
+          "fold": 1
+        },
+        {
+          "returnMAE": 0.007375413828586781,
+          "returnRMSE": 0.00992992487000186,
+          "returnR2": -0.024238377477302064,
+          "priceMAE": 8.845953176601327,
+          "priceRMSE": 11.930227151014643,
+          "priceMAPE": 0.7371217170056233,
+          "directionalAccuracy": 31.92307692307692,
+          "activeDirectionalAccuracy": 30.08474576271186,
+          "residualStandardDeviation": 0.009928291508006714,
+          "fold": 2
+        },
+        {
+          "returnMAE": 0.005205900198453517,
+          "returnRMSE": 0.0071775996467806,
+          "returnR2": -0.0011757274328954015,
+          "priceMAE": 6.5668879836931415,
+          "priceRMSE": 9.046421657970724,
+          "priceMAPE": 0.5209827201202419,
+          "directionalAccuracy": 25.384615384615383,
+          "activeDirectionalAccuracy": 18.24175824175824,
+          "residualStandardDeviation": 0.007169128412448998,
+          "fold": 3
+        },
+        {
+          "returnMAE": 0.00756180149950312,
+          "returnRMSE": 0.011167742084308983,
+          "returnR2": -0.019749123940990154,
+          "priceMAE": 12.439264553355116,
+          "priceRMSE": 18.8067870824027,
+          "priceMAPE": 0.7558220117127664,
+          "directionalAccuracy": 24.23076923076923,
+          "activeDirectionalAccuracy": 19.305856832971802,
+          "residualStandardDeviation": 0.011125882396526149,
+          "fold": 4
+        },
+        {
+          "returnMAE": 0.006999844712486761,
+          "returnRMSE": 0.009502823889749785,
+          "returnR2": -0.0242789887771675,
+          "priceMAE": 12.70773165413495,
+          "priceRMSE": 17.32432467071402,
+          "priceMAPE": 0.7001879225826763,
+          "directionalAccuracy": 20.961538461538463,
+          "activeDirectionalAccuracy": 13.755458515283841,
+          "residualStandardDeviation": 0.009502025762596721,
+          "fold": 5
+        }
+      ]
+    },
+    "GradientBoosting": {
+      "averageMetrics": {
+        "returnMAE": 0.007070985646099215,
+        "returnRMSE": 0.009938169388145006,
+        "returnR2": -0.024598626713921056,
+        "priceMAE": 10.458741284977913,
+        "priceRMSE": 14.800782462765927,
+        "priceMAPE": 0.7076759592363123,
+        "directionalAccuracy": 27.0,
+        "activeDirectionalAccuracy": 22.742344513480788,
+        "residualStandardDeviation": 0.009898839565502669
+      },
+      "foldMetrics": [
+        {
+          "returnMAE": 0.008197931318978861,
+          "returnRMSE": 0.011916148832708013,
+          "returnR2": -0.05393437464269657,
+          "priceMAE": 11.744130293323629,
+          "priceRMSE": 16.919136791669686,
+          "priceMAPE": 0.822150273868571,
+          "directionalAccuracy": 35.76923076923077,
+          "activeDirectionalAccuracy": 35.526315789473685,
+          "residualStandardDeviation": 0.011777939213607074,
+          "fold": 1
+        },
+        {
+          "returnMAE": 0.007388258429841346,
+          "returnRMSE": 0.00989850593516451,
+          "returnR2": -0.017767116378029302,
+          "priceMAE": 8.86172603239236,
+          "priceRMSE": 11.894761340492602,
+          "priceMAPE": 0.7386561177533587,
+          "directionalAccuracy": 29.807692307692307,
+          "activeDirectionalAccuracy": 27.75423728813559,
+          "residualStandardDeviation": 0.009888409163574089,
+          "fold": 2
+        },
+        {
+          "returnMAE": 0.005242454568195788,
+          "returnRMSE": 0.007202568757705185,
+          "returnR2": -0.008153533607242913,
+          "priceMAE": 6.615437352070983,
+          "priceRMSE": 9.082392799060262,
+          "priceMAPE": 0.5247566352884467,
+          "directionalAccuracy": 25.384615384615383,
+          "activeDirectionalAccuracy": 18.681318681318682,
+          "residualStandardDeviation": 0.0071771763402531065,
+          "fold": 3
+        },
+        {
+          "returnMAE": 0.007542728684697997,
+          "returnRMSE": 0.011216040013755696,
+          "returnR2": -0.028588560272879482,
+          "priceMAE": 12.398204855852825,
+          "priceRMSE": 18.88578216956175,
+          "priceMAPE": 0.7541672082619607,
+          "directionalAccuracy": 24.23076923076923,
+          "activeDirectionalAccuracy": 19.522776572668114,
+          "residualStandardDeviation": 0.011193089804336833,
+          "fold": 4
+        },
+        {
+          "returnMAE": 0.006983555228782079,
+          "returnRMSE": 0.009457583401391622,
+          "returnR2": -0.014549548668757017,
+          "priceMAE": 12.674207891249765,
+          "priceRMSE": 17.221839213045325,
+          "priceMAPE": 0.6986495610092239,
+          "directionalAccuracy": 19.807692307692307,
+          "activeDirectionalAccuracy": 12.22707423580786,
+          "residualStandardDeviation": 0.00945758330574224,
+          "fold": 5
+        }
+      ]
+    }
+  },
+  "naiveBaseline": {
+    "returnMAE": 0.008885314832349686,
+    "returnRMSE": 0.012525017741656305,
+    "returnR2": -0.003969268416394556,
+    "priceMAE": 29.589242705478267,
+    "priceRMSE": 48.122300794014386,
+    "priceMAPE": 0.8890176125523431,
+    "directionalAccuracy": 9.73111395646607,
+    "activeDirectionalAccuracy": 0.0,
+    "residualStandardDeviation": 0.012500233918865568
+  },
+  "reliability": {
+    "rating": "Experimental",
+    "beatsNaiveBaseline": true,
+    "returnMAEImprovementPercent": 0.9171121946860357,
+    "suitableForDisplay": true,
+    "message": "This remains an experimental analytical model. Short-term market prices are inherently uncertain."
+  },
+  "residualQuantiles": {
+    "lower80": -0.013069370765446703,
+    "upper80": 0.01367568950260542,
+    "lower95": -0.027745000844312834,
+    "upper95": 0.02524873206994556
+  },
+  "featureImportance": [
+    {
+      "feature": "Close_Position_In_Range",
+      "importance": 0.0731925975
+    },
+    {
+      "feature": "Open_Close_Return",
+      "importance": 0.0641082173
+    },
+    {
+      "feature": "True_Range_Ratio",
+      "importance": 0.0609558953
+    },
+    {
+      "feature": "Return_1D",
+      "importance": 0.0568616177
+    },
+    {
+      "feature": "Volatility_20",
+      "importance": 0.0564785774
+    },
+    {
+      "feature": "High_Low_Range",
+      "importance": 0.0546535945
+    },
+    {
+      "feature": "Return_Lag_3",
+      "importance": 0.0426998815
+    },
+    {
+      "feature": "Close_MA50_Ratio",
+      "importance": 0.0404112806
+    },
+    {
+      "feature": "Volatility_10",
+      "importance": 0.040188097
+    },
+    {
+      "feature": "MA5_MA20_Ratio",
+      "importance": 0.0394021919
+    },
+    {
+      "feature": "MA10_MA50_Ratio",
+      "importance": 0.0385858061
+    },
+    {
+      "feature": "Return_Lag_1",
+      "importance": 0.0341341823
+    },
+    {
+      "feature": "Return_Lag_5",
+      "importance": 0.0339665188
+    },
+    {
+      "feature": "Return_Lag_2",
+      "importance": 0.0294472583
+    },
+    {
+      "feature": "Volatility_5",
+      "importance": 0.0281252084
+    },
+    {
+      "feature": "Return_Lag_10",
+      "importance": 0.0269659367
+    },
+    {
+      "feature": "Close_EMA20_Ratio",
+      "importance": 0.026008161
+    },
+    {
+      "feature": "Volume_Change",
+      "importance": 0.0241044692
+    },
+    {
+      "feature": "Return_10D",
+      "importance": 0.0236112815
+    },
+    {
+      "feature": "Close_MA20_Ratio",
+      "importance": 0.0221289556
+    },
+    {
+      "feature": "Return_2D",
+      "importance": 0.0210675536
+    },
+    {
+      "feature": "Momentum_10",
+      "importance": 0.0209454752
+    },
+    {
+      "feature": "Return_3D",
+      "importance": 0.0208844307
+    },
+    {
+      "feature": "Close_MA10_Ratio",
+      "importance": 0.0196075861
+    },
+    {
+      "feature": "Close_EMA10_Ratio",
+      "importance": 0.0195966354
+    },
+    {
+      "feature": "Volume_MA20_Ratio",
+      "importance": 0.0194624227
+    },
+    {
+      "feature": "Return_5D",
+      "importance": 0.015800484
+    },
+    {
+      "feature": "Momentum_5",
+      "importance": 0.0157586532
+    },
+    {
+      "feature": "Close_MA5_Ratio",
+      "importance": 0.0149610201
+    },
+    {
+      "feature": "Month",
+      "importance": 0.010696163
+    },
+    {
+      "feature": "DayOfWeek",
+      "importance": 0.0051898475
+    }
+  ],
+  "disclaimer": "This model is an educational analytical prototype. Gold prices are affected by market, currency, geopolitical, interest-rate and liquidity conditions that cannot be predicted reliably from historical prices alone. This is not financial advice."
+}

@@ -9,6 +9,8 @@ import SearchResults from "./pages/SearchResults";
 import Wishlist from "./pages/Wishlist";
 import Compare from "./pages/Compare";
 import BranchProducts from "./pages/BranchProducts";
+import ImageSearchPage from "./pages/ImageSearchPage";
+import GoldPredictionPage from "./pages/GoldPredictionPage";
 
 import Chatbot from "./components/Chatbot";
 
@@ -47,6 +49,14 @@ function App() {
         <Route
           path="/branch/:branch"
           element={<BranchProducts />}
+        />
+        <Route
+          path="/image-search"
+          element={<ImageSearchPage />}
+        />
+        <Route
+          path="/gold-prediction"
+          element={<GoldPredictionPage />}
         />
 
         <Route
