@@ -16,6 +16,7 @@ import expertRequestRoutes from "./routes/expertRequestRoutes.js";
 import imageSearchRoutes from "./routes/imageSearchRoutes.js";
 import goldPredictionRoutes from "./routes/goldPredictionRoutes.js";
 import adminAuthRoutes from "./routes/adminAuthRoutes.js";
+import adminDashboardRoutes from "./routes/adminDashboardRoutes.js";
 
 dotenv.config();
 
@@ -55,6 +56,11 @@ app.use(
 app.use(
   "/api/admin/auth",
   adminAuthRoutes
+);
+
+app.use(
+  "/api/admin/dashboard",
+  adminDashboardRoutes
 );
 
 /*
