@@ -1,10 +1,13 @@
+import { useEffect, useState } from "react";
 import {
   Link,
   NavLink,
+  useLocation,
   useNavigate,
 } from "react-router-dom";
 
 import {
+  CalendarDays,
   Camera,
   Heart,
   MapPin,
@@ -14,7 +17,14 @@ import {
   X,
 } from "lucide-react";
 
-import { useEffect, useState } from "react";
+const readStoredItems = (key) => {
+  try {
+    const savedItems = JSON.parse(localStorage.getItem(key));
+    return Array.isArray(savedItems) ? savedItems : [];
+  } catch {
+    return [];
+  }
+};
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -23,45 +33,90 @@ function Navbar() {
   const [compareCount, setCompareCount] = useState(0);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const updateWishlistCount = () => {
-    const savedWishlist =
-      JSON.parse(localStorage.getItem("muliyaWishlist")) || [];
-    setWishlistCount(savedWishlist.length);
-  };
-
-  const updateCompareCount = () => {
-    const savedCompare =
-      JSON.parse(localStorage.getItem("muliyaCompare")) || [];
-    setCompareCount(savedCompare.length);
+  const updateSavedItemCounts = () => {
+    setWishlistCount(readStoredItems("muliyaWishlist").length);
+    setCompareCount(readStoredItems("muliyaCompare").length);
   };
 
   useEffect(() => {
-    updateWishlistCount();
-    updateCompareCount();
+    updateSavedItemCounts();
 
-    window.addEventListener("wishlistUpdated", updateWishlistCount);
-    window.addEventListener("compareUpdated", updateCompareCount);
-    window.addEventListener("storage", updateWishlistCount);
-    window.addEventListener("storage", updateCompareCount);
+    window.addEventListener(
+      "wishlistUpdated",
+      updateSavedItemCounts,
+    );
+
+    window.addEventListener(
+      "compareUpdated",
+      updateSavedItemCounts,
+    );
+
+    window.addEventListener(
+      "storage",
+      updateSavedItemCounts,
+    );
 
     return () => {
-      window.removeEventListener("wishlistUpdated", updateWishlistCount);
-      window.removeEventListener("compareUpdated", updateCompareCount);
-      window.removeEventListener("storage", updateWishlistCount);
-      window.removeEventListener("storage", updateCompareCount);
+      window.removeEventListener(
+        "wishlistUpdated",
+        updateSavedItemCounts,
+      );
+
+      window.removeEventListener(
+        "compareUpdated",
+        updateSavedItemCounts,
+      );
+
+      window.removeEventListener(
+        "storage",
+        updateSavedItemCounts,
+      );
     };
   }, []);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname, location.search]);
 
-    if (!searchText.trim()) return;
+  useEffect(() => {
+    const handleEscapeKey = (event) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+      }
+    };
 
-    navigate(`/search?q=${encodeURIComponent(searchText.trim())}`);
+    document.addEventListener("keydown", handleEscapeKey);
+
+    return () => {
+      document.removeEventListener(
+        "keydown",
+        handleEscapeKey,
+      );
+    };
+  }, []);
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+
+    const cleanedSearchText = searchText.trim();
+
+    if (!cleanedSearchText) {
+      navigate("/products");
+      return;
+    }
+
+    navigate(
+      `/search?q=${encodeURIComponent(cleanedSearchText)}`,
+    );
+
     setSearchText("");
     setMenuOpen(false);
   };
+
+  const navLinkClassName = ({ isActive }) =>
+    isActive ? "active" : undefined;
 
   return (
     <>
@@ -70,99 +125,246 @@ function Navbar() {
           <p>Creating Happiness Since 1944</p>
 
           <div className="top-strip-links">
-            <a href="#">Gold Rate</a>
-            <a href="#">Silver Rate</a>
-            <a href="/#stores">Showrooms</a>
+            <Link to="/gold-prediction">
+              Gold Rate
+            </Link>
+
+            <Link to="/silver">
+              Silver Jewellery
+            </Link>
+
+            <Link to="/showrooms">
+              Showrooms
+            </Link>
           </div>
         </div>
       </div>
 
       <header className="main-navbar">
         <div className="navbar-container">
-          <Link to="/" className="brand-logo">
-            <div className="brand-mark">M</div>
+          <Link
+            to="/"
+            className="brand-logo"
+            aria-label="Muliya Gold and Diamonds home"
+          >
+            <div
+              className="brand-mark"
+              aria-hidden="true"
+            >
+              M
+            </div>
 
             <div>
               <h2>Muliya</h2>
-              <p>Gold & Diamonds</p>
+              <p>Gold &amp; Diamonds</p>
             </div>
           </Link>
 
-          <nav className={menuOpen ? "nav-menu active" : "nav-menu"}>
-            <NavLink to="/" onClick={() => setMenuOpen(false)}>
+          <nav
+            id="main-navigation"
+            className={
+              menuOpen
+                ? "nav-menu active"
+                : "nav-menu"
+            }
+            aria-label="Main navigation"
+          >
+            <NavLink
+              to="/"
+              end
+              className={navLinkClassName}
+            >
               Home
             </NavLink>
 
-            <NavLink to="/gold" onClick={() => setMenuOpen(false)}>
+            <NavLink
+              to="/products"
+              className={navLinkClassName}
+            >
+              Jewellery
+            </NavLink>
+
+            <NavLink
+              to="/gold"
+              className={navLinkClassName}
+            >
               Gold
             </NavLink>
 
-            <NavLink to="/diamond" onClick={() => setMenuOpen(false)}>
+            <NavLink
+              to="/diamond"
+              className={navLinkClassName}
+            >
               Diamond
             </NavLink>
 
-            <NavLink to="/silver" onClick={() => setMenuOpen(false)}>
+            <NavLink
+              to="/silver"
+              className={navLinkClassName}
+            >
               Silver
             </NavLink>
 
-            <a href="/#collections">Collections</a>
-            <a href="/#stores">Showrooms</a>
+            <NavLink
+              to="/collections"
+              className={navLinkClassName}
+            >
+              Collections
+            </NavLink>
+
+            <NavLink
+              to="/showrooms"
+              className={navLinkClassName}
+            >
+              Showrooms
+            </NavLink>
+
+            <NavLink
+              to="/appointment"
+              className={navLinkClassName}
+            >
+              Appointment
+            </NavLink>
+
+            <NavLink
+              to="/contact"
+              className={navLinkClassName}
+            >
+              Contact
+            </NavLink>
           </nav>
 
           <div className="navbar-actions">
-            <form className="navbar-search-form" onSubmit={handleSearch}>
-              <Search size={17} />
+            <form
+              className="navbar-search-form"
+              role="search"
+              onSubmit={handleSearch}
+            >
+              <Search
+                size={17}
+                aria-hidden="true"
+              />
 
               <input
-                type="text"
+                type="search"
+                name="q"
+                aria-label="Search jewellery"
                 placeholder="Search jewellery..."
                 value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
+                onChange={(event) =>
+                  setSearchText(event.target.value)
+                }
+                autoComplete="off"
               />
             </form>
 
-            <a
-              href="/#ai-search"
+            <Link
+              to="/image-search"
               className="navbar-icon-btn"
-              title="AI Image Search"
+              title="AI image search"
+              aria-label="Open AI image search"
             >
-              <Camera size={19} />
-            </a>
+              <Camera
+                size={19}
+                aria-hidden="true"
+              />
+            </Link>
 
             <Link
               to="/wishlist"
               className="navbar-icon-btn wishlist-navbar-button"
               title="Wishlist"
+              aria-label={`Open wishlist. ${wishlistCount} saved items.`}
             >
-              <Heart size={19} />
+              <Heart
+                size={19}
+                aria-hidden="true"
+              />
 
               {wishlistCount > 0 && (
-                <span className="wishlist-count">{wishlistCount}</span>
+                <span
+                  className="wishlist-count"
+                  aria-hidden="true"
+                >
+                  {wishlistCount > 99
+                    ? "99+"
+                    : wishlistCount}
+                </span>
               )}
             </Link>
 
             <Link
               to="/compare"
               className="navbar-icon-btn wishlist-navbar-button"
-              title="Compare"
+              title="Compare jewellery"
+              aria-label={`Open comparison. ${compareCount} selected items.`}
             >
-              <Scale size={19} />
+              <Scale
+                size={19}
+                aria-hidden="true"
+              />
 
               {compareCount > 0 && (
-                <span className="wishlist-count">{compareCount}</span>
+                <span
+                  className="wishlist-count"
+                  aria-hidden="true"
+                >
+                  {compareCount > 99
+                    ? "99+"
+                    : compareCount}
+                </span>
               )}
             </Link>
 
-            <a href="/#stores" className="navbar-icon-btn" title="Showrooms">
-              <MapPin size={19} />
-            </a>
+            <Link
+              to="/showrooms"
+              className="navbar-icon-btn"
+              title="Showrooms"
+              aria-label="View showrooms"
+            >
+              <MapPin
+                size={19}
+                aria-hidden="true"
+              />
+            </Link>
+
+            <Link
+              to="/appointment"
+              className="navbar-icon-btn"
+              title="Book an appointment"
+              aria-label="Book an appointment"
+            >
+              <CalendarDays
+                size={19}
+                aria-hidden="true"
+              />
+            </Link>
 
             <button
               type="button"
               className="mobile-menu-btn"
-              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label={
+                menuOpen
+                  ? "Close navigation menu"
+                  : "Open navigation menu"
+              }
+              aria-expanded={menuOpen}
+              aria-controls="main-navigation"
+              onClick={() =>
+                setMenuOpen((currentValue) => !currentValue)
+              }
             >
-              {menuOpen ? <X size={24} /> : <Menu size={24} />}
+              {menuOpen ? (
+                <X
+                  size={24}
+                  aria-hidden="true"
+                />
+              ) : (
+                <Menu
+                  size={24}
+                  aria-hidden="true"
+                />
+              )}
             </button>
           </div>
         </div>

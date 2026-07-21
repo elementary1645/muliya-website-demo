@@ -7,15 +7,15 @@
   "predictionConversion": "Predicted price = current close × exp(predicted logarithmic return)",
   "dataSource": "Yahoo Finance via yfinance",
   "dataStartDate": "2010-01-04",
-  "dataEndDate": "2026-07-15",
-  "rawRowCount": 4156,
-  "preparedRowCount": 3901,
-  "trainingRowCount": 3120,
+  "dataEndDate": "2026-07-21",
+  "rawRowCount": 4160,
+  "preparedRowCount": 3905,
+  "trainingRowCount": 3124,
   "testingRowCount": 781,
   "trainingStartDate": "2010-03-16",
-  "trainingEndDate": "2023-04-17",
-  "testingStartDate": "2023-04-18",
-  "testingEndDate": "2026-07-14",
+  "trainingEndDate": "2023-04-21",
+  "testingStartDate": "2023-04-24",
+  "testingEndDate": "2026-07-20",
   "featureColumns": [
     "Return_1D",
     "Return_2D",
@@ -51,328 +51,328 @@
   ],
   "holdoutResults": {
     "RandomForest": {
-      "returnMAE": 0.00880382652648596,
-      "returnRMSE": 0.012409041477517346,
-      "returnR2": 0.01453729677514648,
-      "priceMAE": 29.289848801492727,
-      "priceRMSE": 47.60111094001338,
-      "priceMAPE": 0.8808267700861936,
+      "returnMAE": 0.008794053277137899,
+      "returnRMSE": 0.012403380183601433,
+      "returnR2": 0.016145961549485,
+      "priceMAE": 29.334327118330908,
+      "priceRMSE": 47.62509710294663,
+      "priceMAPE": 0.8798326145492672,
       "directionalAccuracy": 27.91293213828425,
-      "activeDirectionalAccuracy": 23.54609929078014,
-      "residualStandardDeviation": 0.012389145157226436
+      "activeDirectionalAccuracy": 23.579545454545457,
+      "residualStandardDeviation": 0.012382027363347254
     },
     "GradientBoosting": {
-      "returnMAE": 0.00884975560297649,
-      "returnRMSE": 0.012471050806943778,
-      "returnR2": 0.0046637601484281754,
-      "priceMAE": 29.499512708905485,
-      "priceRMSE": 47.98180293959973,
-      "priceMAPE": 0.885582935306938,
-      "directionalAccuracy": 27.784891165172855,
-      "activeDirectionalAccuracy": 22.69503546099291,
-      "residualStandardDeviation": 0.01245875869428635
+      "returnMAE": 0.008869105151317839,
+      "returnRMSE": 0.01246595619283762,
+      "returnR2": 0.0061936807627201995,
+      "priceMAE": 29.63313094767314,
+      "priceRMSE": 47.98685369298741,
+      "priceMAPE": 0.8873875787352249,
+      "directionalAccuracy": 27.40076824583867,
+      "activeDirectionalAccuracy": 22.301136363636363,
+      "residualStandardDeviation": 0.012448780563708371
     }
   },
   "crossValidationResults": {
     "RandomForest": {
       "averageMetrics": {
-        "returnMAE": 0.007052357458289675,
-        "returnRMSE": 0.00991394142368919,
-        "returnR2": -0.020292595405861702,
-        "priceMAE": 10.438836394210693,
-        "priceRMSE": 14.775428385817321,
-        "priceMAPE": 0.70554229161341,
-        "directionalAccuracy": 27.038461538461537,
-        "activeDirectionalAccuracy": 22.681072642474977,
-        "residualStandardDeviation": 0.009893577500223854
+        "returnMAE": 0.0070349809495871135,
+        "returnRMSE": 0.009887786209728267,
+        "returnR2": -0.019125934465654915,
+        "priceMAE": 10.415230416350049,
+        "priceRMSE": 14.732042855508336,
+        "priceMAPE": 0.7038584831373139,
+        "directionalAccuracy": 27.03846153846154,
+        "activeDirectionalAccuracy": 22.774206130927713,
+        "residualStandardDeviation": 0.009864815090732504
       },
       "foldMetrics": [
         {
-          "returnMAE": 0.0081188270524182,
-          "returnRMSE": 0.011791616627604721,
-          "returnR2": -0.03202075940095339,
-          "priceMAE": 11.634344603268927,
-          "priceRMSE": 16.769381366984526,
-          "priceMAPE": 0.8135970866457423,
-          "directionalAccuracy": 32.69230769230769,
-          "activeDirectionalAccuracy": 32.01754385964912,
-          "residualStandardDeviation": 0.011742559421540691,
+          "returnMAE": 0.008024957225293413,
+          "returnRMSE": 0.011662926803049083,
+          "returnR2": -0.02781571797734128,
+          "priceMAE": 11.472279956648949,
+          "priceRMSE": 16.53283583165528,
+          "priceMAPE": 0.8044818827030731,
+          "directionalAccuracy": 35.0,
+          "activeDirectionalAccuracy": 34.21052631578947,
+          "residualStandardDeviation": 0.011590400225004962,
           "fold": 1
         },
         {
-          "returnMAE": 0.007375413828586781,
-          "returnRMSE": 0.00992992487000186,
-          "returnR2": -0.024238377477302064,
-          "priceMAE": 8.845953176601327,
-          "priceRMSE": 11.930227151014643,
-          "priceMAPE": 0.7371217170056233,
-          "directionalAccuracy": 31.92307692307692,
-          "activeDirectionalAccuracy": 30.08474576271186,
-          "residualStandardDeviation": 0.009928291508006714,
+          "returnMAE": 0.007361695677355482,
+          "returnRMSE": 0.009910046725578056,
+          "returnR2": -0.021933968602418474,
+          "priceMAE": 8.827414851531854,
+          "priceRMSE": 11.901241439046212,
+          "priceMAPE": 0.7357903150316352,
+          "directionalAccuracy": 31.153846153846153,
+          "activeDirectionalAccuracy": 29.44915254237288,
+          "residualStandardDeviation": 0.009907504462712304,
           "fold": 2
         },
         {
-          "returnMAE": 0.005205900198453517,
-          "returnRMSE": 0.0071775996467806,
-          "returnR2": -0.0011757274328954015,
-          "priceMAE": 6.5668879836931415,
-          "priceRMSE": 9.046421657970724,
-          "priceMAPE": 0.5209827201202419,
-          "directionalAccuracy": 25.384615384615383,
-          "activeDirectionalAccuracy": 18.24175824175824,
-          "residualStandardDeviation": 0.007169128412448998,
+          "returnMAE": 0.0052277738487770615,
+          "returnRMSE": 0.007193887936501624,
+          "returnR2": -0.0033957167634488528,
+          "priceMAE": 6.590035653093718,
+          "priceRMSE": 9.062046440864362,
+          "priceMAPE": 0.5231190082925189,
+          "directionalAccuracy": 24.807692307692307,
+          "activeDirectionalAccuracy": 18.021978021978022,
+          "residualStandardDeviation": 0.007189517379552568,
           "fold": 3
         },
         {
-          "returnMAE": 0.00756180149950312,
-          "returnRMSE": 0.011167742084308983,
-          "returnR2": -0.019749123940990154,
-          "priceMAE": 12.439264553355116,
-          "priceRMSE": 18.8067870824027,
-          "priceMAPE": 0.7558220117127664,
-          "directionalAccuracy": 24.23076923076923,
-          "activeDirectionalAccuracy": 19.305856832971802,
-          "residualStandardDeviation": 0.011125882396526149,
+          "returnMAE": 0.007555461704726206,
+          "returnRMSE": 0.011176304595793024,
+          "returnR2": -0.01727648564118489,
+          "priceMAE": 12.457517398421032,
+          "priceRMSE": 18.839720173227654,
+          "priceMAPE": 0.7552382154570958,
+          "directionalAccuracy": 23.846153846153847,
+          "activeDirectionalAccuracy": 19.088937093275486,
+          "residualStandardDeviation": 0.011142489045472574,
           "fold": 4
         },
         {
-          "returnMAE": 0.006999844712486761,
-          "returnRMSE": 0.009502823889749785,
-          "returnR2": -0.0242789887771675,
-          "priceMAE": 12.70773165413495,
-          "priceRMSE": 17.32432467071402,
-          "priceMAPE": 0.7001879225826763,
-          "directionalAccuracy": 20.961538461538463,
-          "activeDirectionalAccuracy": 13.755458515283841,
-          "residualStandardDeviation": 0.009502025762596721,
+          "returnMAE": 0.0070050162917834075,
+          "returnRMSE": 0.009495764987719552,
+          "returnR2": -0.025207783343881074,
+          "priceMAE": 12.72890422205469,
+          "priceRMSE": 17.32437039274818,
+          "priceMAPE": 0.7006629942022469,
+          "directionalAccuracy": 20.384615384615383,
+          "activeDirectionalAccuracy": 13.100436681222707,
+          "residualStandardDeviation": 0.00949416434092011,
           "fold": 5
         }
       ]
     },
     "GradientBoosting": {
       "averageMetrics": {
-        "returnMAE": 0.007070985646099215,
-        "returnRMSE": 0.009938169388145006,
-        "returnR2": -0.024598626713921056,
-        "priceMAE": 10.458741284977913,
-        "priceRMSE": 14.800782462765927,
-        "priceMAPE": 0.7076759592363123,
-        "directionalAccuracy": 27.0,
-        "activeDirectionalAccuracy": 22.742344513480788,
-        "residualStandardDeviation": 0.009898839565502669
+        "returnMAE": 0.00708076299313021,
+        "returnRMSE": 0.00994004894101947,
+        "returnR2": -0.028418937972844737,
+        "priceMAE": 10.470465520486053,
+        "priceRMSE": 14.796668566609005,
+        "priceMAPE": 0.7087216623276655,
+        "directionalAccuracy": 26.5,
+        "activeDirectionalAccuracy": 22.793949265109426,
+        "residualStandardDeviation": 0.00989748221732575
       },
       "foldMetrics": [
         {
-          "returnMAE": 0.008197931318978861,
-          "returnRMSE": 0.011916148832708013,
-          "returnR2": -0.05393437464269657,
-          "priceMAE": 11.744130293323629,
-          "priceRMSE": 16.919136791669686,
-          "priceMAPE": 0.822150273868571,
-          "directionalAccuracy": 35.76923076923077,
-          "activeDirectionalAccuracy": 35.526315789473685,
-          "residualStandardDeviation": 0.011777939213607074,
+          "returnMAE": 0.008184256861661108,
+          "returnRMSE": 0.011861714019410814,
+          "returnR2": -0.06315124787748605,
+          "priceMAE": 11.693338986138981,
+          "priceRMSE": 16.794315047861033,
+          "priceMAPE": 0.8210533568901471,
+          "directionalAccuracy": 36.92307692307693,
+          "activeDirectionalAccuracy": 37.5,
+          "residualStandardDeviation": 0.011689999233013186,
           "fold": 1
         },
         {
-          "returnMAE": 0.007388258429841346,
-          "returnRMSE": 0.00989850593516451,
-          "returnR2": -0.017767116378029302,
-          "priceMAE": 8.86172603239236,
-          "priceRMSE": 11.894761340492602,
-          "priceMAPE": 0.7386561177533587,
-          "directionalAccuracy": 29.807692307692307,
-          "activeDirectionalAccuracy": 27.75423728813559,
-          "residualStandardDeviation": 0.009888409163574089,
+          "returnMAE": 0.0074360266857744954,
+          "returnRMSE": 0.009943960250475377,
+          "returnR2": -0.028940329961410383,
+          "priceMAE": 8.920046513576148,
+          "priceRMSE": 11.953496426431073,
+          "priceMAPE": 0.7434694739277693,
+          "directionalAccuracy": 27.884615384615387,
+          "activeDirectionalAccuracy": 25.847457627118644,
+          "residualStandardDeviation": 0.009933337890623594,
           "fold": 2
         },
         {
-          "returnMAE": 0.005242454568195788,
-          "returnRMSE": 0.007202568757705185,
-          "returnR2": -0.008153533607242913,
-          "priceMAE": 6.615437352070983,
-          "priceRMSE": 9.082392799060262,
-          "priceMAPE": 0.5247566352884467,
-          "directionalAccuracy": 25.384615384615383,
-          "activeDirectionalAccuracy": 18.681318681318682,
-          "residualStandardDeviation": 0.0071771763402531065,
+          "returnMAE": 0.005261478033243326,
+          "returnRMSE": 0.007204676662598569,
+          "returnR2": -0.00640757324144503,
+          "priceMAE": 6.634305559227447,
+          "priceRMSE": 9.076464275706625,
+          "priceMAPE": 0.5266104824506096,
+          "directionalAccuracy": 22.692307692307693,
+          "activeDirectionalAccuracy": 16.043956043956044,
+          "residualStandardDeviation": 0.007187537065689568,
           "fold": 3
         },
         {
-          "returnMAE": 0.007542728684697997,
-          "returnRMSE": 0.011216040013755696,
-          "returnR2": -0.028588560272879482,
-          "priceMAE": 12.398204855852825,
-          "priceRMSE": 18.88578216956175,
-          "priceMAPE": 0.7541672082619607,
+          "returnMAE": 0.007546103782126367,
+          "returnRMSE": 0.01126024580484186,
+          "returnR2": -0.03261466643979061,
+          "priceMAE": 12.430935114700237,
+          "priceRMSE": 18.969995158320337,
+          "priceMAPE": 0.754627153586408,
           "directionalAccuracy": 24.23076923076923,
-          "activeDirectionalAccuracy": 19.522776572668114,
-          "residualStandardDeviation": 0.011193089804336833,
+          "activeDirectionalAccuracy": 21.0412147505423,
+          "residualStandardDeviation": 0.011247000841306795,
           "fold": 4
         },
         {
-          "returnMAE": 0.006983555228782079,
-          "returnRMSE": 0.009457583401391622,
-          "returnR2": -0.014549548668757017,
-          "priceMAE": 12.674207891249765,
-          "priceRMSE": 17.221839213045325,
-          "priceMAPE": 0.6986495610092239,
-          "directionalAccuracy": 19.807692307692307,
-          "activeDirectionalAccuracy": 12.22707423580786,
-          "residualStandardDeviation": 0.00945758330574224,
+          "returnMAE": 0.006975949602845756,
+          "returnRMSE": 0.00942964796777073,
+          "returnR2": -0.010980872344091619,
+          "priceMAE": 12.67370142878745,
+          "priceRMSE": 17.189071924725955,
+          "priceMAPE": 0.6978478447833943,
+          "directionalAccuracy": 20.76923076923077,
+          "activeDirectionalAccuracy": 13.537117903930133,
+          "residualStandardDeviation": 0.009429536055995606,
           "fold": 5
         }
       ]
     }
   },
   "naiveBaseline": {
-    "returnMAE": 0.008885314832349686,
-    "returnRMSE": 0.012525017741656305,
-    "returnR2": -0.003969268416394556,
-    "priceMAE": 29.589242705478267,
-    "priceRMSE": 48.122300794014386,
-    "priceMAPE": 0.8890176125523431,
-    "directionalAccuracy": 9.73111395646607,
+    "returnMAE": 0.008887483405485397,
+    "returnRMSE": 0.012530881897763952,
+    "returnR2": -0.00418524276381671,
+    "priceMAE": 29.67887076145618,
+    "priceRMSE": 48.19519893078675,
+    "priceMAPE": 0.8892206510732908,
+    "directionalAccuracy": 9.859154929577464,
     "activeDirectionalAccuracy": 0.0,
-    "residualStandardDeviation": 0.012500233918865568
+    "residualStandardDeviation": 0.012504741530649397
   },
   "reliability": {
     "rating": "Experimental",
     "beatsNaiveBaseline": true,
-    "returnMAEImprovementPercent": 0.9171121946860357,
+    "returnMAEImprovementPercent": 1.0512551650991808,
     "suitableForDisplay": true,
     "message": "This remains an experimental analytical model. Short-term market prices are inherently uncertain."
   },
   "residualQuantiles": {
-    "lower80": -0.013069370765446703,
-    "upper80": 0.01367568950260542,
-    "lower95": -0.027745000844312834,
-    "upper95": 0.02524873206994556
+    "lower80": -0.013066914083063454,
+    "upper80": 0.013815703712575518,
+    "lower95": -0.02763085774668056,
+    "upper95": 0.025294905798937537
   },
   "featureImportance": [
     {
       "feature": "Close_Position_In_Range",
-      "importance": 0.0731925975
+      "importance": 0.0732597614
     },
     {
       "feature": "Open_Close_Return",
-      "importance": 0.0641082173
+      "importance": 0.0639486519
     },
     {
       "feature": "True_Range_Ratio",
-      "importance": 0.0609558953
+      "importance": 0.0607895251
     },
     {
       "feature": "Return_1D",
-      "importance": 0.0568616177
-    },
-    {
-      "feature": "Volatility_20",
-      "importance": 0.0564785774
+      "importance": 0.0583215295
     },
     {
       "feature": "High_Low_Range",
-      "importance": 0.0546535945
+      "importance": 0.0558496699
+    },
+    {
+      "feature": "Volatility_20",
+      "importance": 0.055117332
     },
     {
       "feature": "Return_Lag_3",
-      "importance": 0.0426998815
+      "importance": 0.0422511049
     },
     {
       "feature": "Close_MA50_Ratio",
-      "importance": 0.0404112806
+      "importance": 0.0401491827
     },
     {
       "feature": "Volatility_10",
-      "importance": 0.040188097
+      "importance": 0.0394110739
     },
     {
       "feature": "MA5_MA20_Ratio",
-      "importance": 0.0394021919
+      "importance": 0.0390096641
     },
     {
       "feature": "MA10_MA50_Ratio",
-      "importance": 0.0385858061
-    },
-    {
-      "feature": "Return_Lag_1",
-      "importance": 0.0341341823
+      "importance": 0.0375418875
     },
     {
       "feature": "Return_Lag_5",
-      "importance": 0.0339665188
+      "importance": 0.03590689
+    },
+    {
+      "feature": "Return_Lag_1",
+      "importance": 0.0330646384
     },
     {
       "feature": "Return_Lag_2",
-      "importance": 0.0294472583
-    },
-    {
-      "feature": "Volatility_5",
-      "importance": 0.0281252084
+      "importance": 0.0292566058
     },
     {
       "feature": "Return_Lag_10",
-      "importance": 0.0269659367
+      "importance": 0.0269396532
+    },
+    {
+      "feature": "Volatility_5",
+      "importance": 0.0269060237
     },
     {
       "feature": "Close_EMA20_Ratio",
-      "importance": 0.026008161
+      "importance": 0.0257583733
     },
     {
       "feature": "Volume_Change",
-      "importance": 0.0241044692
+      "importance": 0.0240986651
     },
     {
       "feature": "Return_10D",
-      "importance": 0.0236112815
-    },
-    {
-      "feature": "Close_MA20_Ratio",
-      "importance": 0.0221289556
-    },
-    {
-      "feature": "Return_2D",
-      "importance": 0.0210675536
-    },
-    {
-      "feature": "Momentum_10",
-      "importance": 0.0209454752
+      "importance": 0.023247892
     },
     {
       "feature": "Return_3D",
-      "importance": 0.0208844307
+      "importance": 0.021527375
+    },
+    {
+      "feature": "Return_2D",
+      "importance": 0.0215190332
+    },
+    {
+      "feature": "Close_MA20_Ratio",
+      "importance": 0.021456565
+    },
+    {
+      "feature": "Momentum_10",
+      "importance": 0.021225874
     },
     {
       "feature": "Close_MA10_Ratio",
-      "importance": 0.0196075861
+      "importance": 0.0208249169
     },
     {
       "feature": "Close_EMA10_Ratio",
-      "importance": 0.0195966354
+      "importance": 0.020729596
     },
     {
       "feature": "Volume_MA20_Ratio",
-      "importance": 0.0194624227
+      "importance": 0.0184417699
     },
     {
       "feature": "Return_5D",
-      "importance": 0.015800484
+      "importance": 0.0160903774
     },
     {
       "feature": "Momentum_5",
-      "importance": 0.0157586532
+      "importance": 0.0160425923
     },
     {
       "feature": "Close_MA5_Ratio",
-      "importance": 0.0149610201
+      "importance": 0.0147745466
     },
     {
       "feature": "Month",
-      "importance": 0.010696163
+      "importance": 0.0112905882
     },
     {
       "feature": "DayOfWeek",
-      "importance": 0.0051898475
+      "importance": 0.0052486411
     }
   ],
   "disclaimer": "This model is an educational analytical prototype. Gold prices are affected by market, currency, geopolitical, interest-rate and liquidity conditions that cannot be predicted reliably from historical prices alone. This is not financial advice."

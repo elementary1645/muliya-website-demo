@@ -2,45 +2,72 @@ import { Link } from "react-router-dom";
 import { Mail, MapPin, Phone } from "lucide-react";
 
 function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="footer">
       <div className="footer-main">
         <div className="container footer-grid">
+          {/* Brand */}
           <div className="footer-brand-column">
-            <Link to="/" className="footer-brand">
+            <Link
+              to="/"
+              className="footer-brand"
+              aria-label="Muliya Gold and Diamonds Home"
+            >
               <div className="footer-brand-mark">M</div>
 
               <div>
                 <h2>Muliya</h2>
-                <p>Gold & Diamonds</p>
+                <p>Gold &amp; Diamonds</p>
               </div>
             </Link>
 
             <p className="footer-description">
-              Explore gold, diamond and silver jewellery through an improved
-              digital discovery experience with smart search, AI image search,
-              wishlist, comparison and branch availability.
+              Discover premium gold, diamond and silver jewellery through our
+              modern digital experience featuring AI image search, smart product
+              discovery, wishlist, comparison and appointment booking.
             </p>
 
             <div className="footer-socials">
-              <a href="#" aria-label="Instagram">
+              <a
+                href="https://www.instagram.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+              >
                 IG
               </a>
 
-              <a href="#" aria-label="Facebook">
+              <a
+                href="https://www.facebook.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+              >
                 FB
               </a>
 
-              <a href="#" aria-label="YouTube">
+              <a
+                href="https://www.youtube.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube"
+              >
                 YT
               </a>
             </div>
           </div>
 
+          {/* Jewellery */}
           <div className="footer-column">
             <h3>Jewellery</h3>
 
             <ul>
+              <li>
+                <Link to="/products">All Jewellery</Link>
+              </li>
+
               <li>
                 <Link to="/gold">Gold Jewellery</Link>
               </li>
@@ -50,68 +77,102 @@ function Footer() {
               </li>
 
               <li>
-                <Link to="/silver">Silver Collection</Link>
+                <Link to="/silver">Silver Jewellery</Link>
               </li>
 
               <li>
-                <a href="/#collections">Featured Collections</a>
+                <Link to="/collections">Collections</Link>
               </li>
 
               <li>
-                <a href="/#ai-search">AI Image Search</a>
+                <Link to="/image-search">AI Image Search</Link>
               </li>
             </ul>
           </div>
 
+          {/* Customer Services */}
           <div className="footer-column">
-            <h3>Quick Links</h3>
+            <h3>Customer Services</h3>
 
             <ul>
               <li>
-                <a href="/#stores">Our Showrooms</a>
+                <Link to="/showrooms">Our Showrooms</Link>
               </li>
 
               <li>
-                <a href="#">Gold Buying Plans</a>
+                <Link to="/appointment">Book Appointment</Link>
               </li>
 
               <li>
-                <a href="#">Virtual Tour</a>
+                <Link to="/contact">Contact Us</Link>
               </li>
 
               <li>
-                <a href="#">Book Appointment</a>
+                <Link to="/wishlist">Wishlist</Link>
               </li>
 
               <li>
-                <a href="#">Contact Us</a>
+                <Link to="/compare">Compare Jewellery</Link>
+              </li>
+
+              <li>
+                <Link to="/gold-prediction">
+                  Gold Price Prediction
+                </Link>
               </li>
             </ul>
           </div>
 
+          {/* Information */}
+          <div className="footer-column">
+            <h3>Information</h3>
+
+            <ul>
+              <li>
+                <Link to="/about">About Us</Link>
+              </li>
+
+              <li>
+                <Link to="/faq">FAQ</Link>
+              </li>
+
+              <li>
+                <Link to="/privacy">Privacy Policy</Link>
+              </li>
+
+              <li>
+                <Link to="/terms">Terms &amp; Conditions</Link>
+              </li>
+
+              <li>
+                <Link to="/disclaimer">Disclaimer</Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact */}
           <div className="footer-column footer-contact-column">
             <h3>Contact</h3>
 
-            <div className="footer-contact-item">
+            <Link to="/showrooms" className="footer-contact-item">
               <MapPin size={18} />
 
               <p>
-                Visit your nearest Muliya Gold & Diamonds showroom for jewellery
-                enquiries and product assistance.
+                Find your nearest Muliya Gold &amp; Diamonds showroom.
               </p>
-            </div>
+            </Link>
 
-            <div className="footer-contact-item">
+            <Link to="/contact" className="footer-contact-item">
               <Phone size={18} />
 
-              <p>Contact your preferred showroom</p>
-            </div>
+              <p>Speak with our jewellery experts.</p>
+            </Link>
 
-            <div className="footer-contact-item">
+            <Link to="/contact" className="footer-contact-item">
               <Mail size={18} />
 
-              <p>Customer enquiries and appointment assistance</p>
-            </div>
+              <p>Customer support and appointment assistance.</p>
+            </Link>
           </div>
         </div>
       </div>
@@ -119,14 +180,15 @@ function Footer() {
       <div className="footer-bottom">
         <div className="container footer-bottom-content">
           <p>
-            © {new Date().getFullYear()} Muliya Gold & Diamonds. React website
-            prototype for demonstration purposes.
+            © {currentYear} Muliya Gold &amp; Diamonds. All Rights Reserved.
           </p>
 
           <div className="footer-bottom-links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms & Conditions</a>
-            <a href="#">Disclaimer</a>
+            <Link to="/privacy">Privacy Policy</Link>
+
+            <Link to="/terms">Terms &amp; Conditions</Link>
+
+            <Link to="/disclaimer">Disclaimer</Link>
           </div>
         </div>
       </div>
