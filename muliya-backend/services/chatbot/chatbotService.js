@@ -2,8 +2,128 @@ import {
   routeChatbotIntent,
 } from "./intentRouter.js";
 
+
+const normalizeProductContext = (product) => {
+  if (!product || typeof product !== "object") {
+    return null;
+  }
+
+  const normalizedProduct = {
+    id: String(
+      product.id ||
+        product._id ||
+        "",
+    ).trim(),
+
+    code: String(
+      product.code || "",
+    ).trim(),
+
+    name: String(
+      product.name || "",
+    ).trim(),
+
+    category: String(
+      product.category || "",
+    ).trim(),
+
+    type: String(
+      product.type || "",
+    ).trim(),
+
+    collection: String(
+      product.collection || "",
+    ).trim(),
+
+    price: String(
+      product.price || "",
+    ).trim(),
+
+    purity: String(
+      product.purity || "",
+    ).trim(),
+
+    weight: String(
+      product.weight || "",
+    ).trim(),
+
+    availability: String(
+      product.availability || "",
+    ).trim(),
+
+    availableBranches: Array.isArray(
+      product.availableBranches,
+    )
+      ? product.availableBranches
+          .map((branch) =>
+            String(branch || "").trim(),
+          )
+          .filter(Boolean)
+      : [],
+
+    unavailableBranches: Array.isArray(
+      product.unavailableBranches,
+    )
+      ? product.unavailableBranches
+          .map((branch) =>
+            String(branch || "").trim(),
+          )
+          .filter(Boolean)
+      : [],
+  };
+
+  if (
+    !normalizedProduct.id &&
+    !normalizedProduct.code &&
+    !normalizedProduct.name
+  ) {
+    return null;
+  }
+
+  return normalizedProduct;
+};
+
+
+const normalizeRelatedProduct = (
+  relatedProduct,
+) => {
+  if (
+    !relatedProduct ||
+    typeof relatedProduct !== "object"
+  ) {
+    return null;
+  }
+
+  const normalizedProduct = {
+    id: String(
+      relatedProduct.id ||
+        relatedProduct._id ||
+        "",
+    ).trim(),
+
+    code: String(
+      relatedProduct.code || "",
+    ).trim(),
+
+    name: String(
+      relatedProduct.name || "",
+    ).trim(),
+  };
+
+  if (
+    !normalizedProduct.id &&
+    !normalizedProduct.code &&
+    !normalizedProduct.name
+  ) {
+    return null;
+  }
+
+  return normalizedProduct;
+};
+
+
 const normalizeConversationContext = (
-  conversationContext = []
+  conversationContext = [],
 ) => {
   if (!Array.isArray(conversationContext)) {
     return [];
@@ -14,29 +134,50 @@ const normalizeConversationContext = (
       (message) =>
         message &&
         ["customer", "bot"].includes(
-          message.sender
+          message.sender,
         ) &&
         typeof message.text === "string" &&
-        message.text.trim()
+        message.text.trim(),
     )
     .slice(-10)
     .map((message) => ({
       sender: message.sender,
+
       text: message.text.trim(),
+
+      intent:
+        typeof message.intent === "string"
+          ? message.intent.trim()
+          : "",
+
+      products: Array.isArray(
+        message.products,
+      )
+        ? message.products
+            .map(normalizeProductContext)
+            .filter(Boolean)
+            .slice(0, 5)
+        : [],
+
+      relatedProduct:
+        normalizeRelatedProduct(
+          message.relatedProduct,
+        ),
     }));
 };
+
 
 const generateChatbotResponse = async ({
   customerQuestion,
   conversationContext = [],
 }) => {
   const normalizedQuestion = String(
-    customerQuestion || ""
+    customerQuestion || "",
   ).trim();
 
   const normalizedContext =
     normalizeConversationContext(
-      conversationContext
+      conversationContext,
     );
 
   try {
@@ -64,31 +205,32 @@ const generateChatbotResponse = async ({
         response.intent || "unknown",
 
       details: Array.isArray(
-        response.details
+        response.details,
       )
         ? response.details
         : [],
 
       products: Array.isArray(
-        response.products
+        response.products,
       )
         ? response.products
         : [],
 
       actions: Array.isArray(
-        response.actions
+        response.actions,
       )
         ? response.actions
         : [],
 
       suggestions: Array.isArray(
-        response.suggestions
+        response.suggestions,
       )
         ? response.suggestions
         : [],
 
-      needsExpert:
-        Boolean(response.needsExpert),
+      needsExpert: Boolean(
+        response.needsExpert,
+      ),
 
       relatedProduct:
         response.relatedProduct || null,
@@ -96,7 +238,7 @@ const generateChatbotResponse = async ({
   } catch (error) {
     console.error(
       "Modular chatbot service error:",
-      error
+      error,
     );
 
     return {
@@ -114,12 +256,16 @@ const generateChatbotResponse = async ({
       actions: [
         {
           type: "expert",
+
           label:
             "Connect with a Jewellery Expert",
+
           url: "",
+
           data: {
             question:
               normalizedQuestion,
+
             productId: null,
           },
         },
@@ -136,6 +282,7 @@ const generateChatbotResponse = async ({
     };
   }
 };
+
 
 export {
   generateChatbotResponse,

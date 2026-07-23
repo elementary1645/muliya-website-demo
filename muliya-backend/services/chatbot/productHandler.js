@@ -612,6 +612,353 @@ const getProductAvailabilityResponse = async (
   });
 };
 
+const isProductComparisonQuestion = (
+  customerQuestion,
+) => {
+  const message =
+    normalizeText(customerQuestion);
+
+  return Boolean(
+    message.includes("compare") ||
+    message.includes("comparison") ||
+    message.includes("difference between") ||
+    message.includes("which is better") ||
+    message.includes("better one")
+  );
+};
+
+
+const getRecentProductsFromContext = (
+  conversationContext = [],
+) => {
+  if (!Array.isArray(conversationContext)) {
+    return [];
+  }
+
+  for (
+    let index =
+      conversationContext.length - 1;
+    index >= 0;
+    index -= 1
+  ) {
+    const message =
+      conversationContext[index];
+
+    if (
+      message?.sender === "bot" &&
+      Array.isArray(message.products) &&
+      message.products.length > 0
+    ) {
+      return message.products;
+    }
+  }
+
+  return [];
+};
+
+
+const getOrdinalIndex = (word) => {
+  const ordinalMap = {
+    first: 0,
+    "1st": 0,
+
+    second: 1,
+    "2nd": 1,
+
+    third: 2,
+    "3rd": 2,
+
+    fourth: 3,
+    "4th": 3,
+
+    fifth: 4,
+    "5th": 4,
+  };
+
+  return ordinalMap[word] ?? null;
+};
+
+
+const findComparisonIndexes = (
+  customerQuestion,
+) => {
+  const message =
+    normalizeText(customerQuestion);
+
+  const ordinalPattern =
+    /\b(first|1st|second|2nd|third|3rd|fourth|4th|fifth|5th)\b/g;
+
+  const matches =
+    message.match(ordinalPattern) || [];
+
+  const indexes = matches
+    .map(getOrdinalIndex)
+    .filter(
+      (index) =>
+        Number.isInteger(index),
+    );
+
+  return [...new Set(indexes)];
+};
+
+
+const formatComparisonValue = (
+  value,
+  fallback = "Not specified",
+) => {
+  if (
+    value === undefined ||
+    value === null ||
+    value === ""
+  ) {
+    return fallback;
+  }
+
+  return String(value);
+};
+
+
+const compareProducts = async ({
+  customerQuestion,
+  conversationContext = [],
+}) => {
+  const recentProducts =
+    getRecentProductsFromContext(
+      conversationContext,
+    );
+
+  if (recentProducts.length < 2) {
+    return createChatbotResponse({
+      reply:
+        "Please ask me to show some jewellery first, then I can compare the products for you.",
+
+      confidence: 0.8,
+
+      intent:
+        "product_comparison_missing_context",
+
+      actions: [
+        createExpertAction(
+          customerQuestion,
+        ),
+      ],
+
+      suggestions: [
+        "Show me diamond rings",
+        "Show me gold jewellery",
+        "Show me necklaces",
+      ],
+    });
+  }
+
+  const requestedIndexes =
+    findComparisonIndexes(
+      customerQuestion,
+    );
+
+  let firstIndex = 0;
+  let secondIndex = 1;
+
+  if (
+    requestedIndexes.length >= 2
+  ) {
+    [
+      firstIndex,
+      secondIndex,
+    ] = requestedIndexes;
+  } else if (
+    requestedIndexes.length === 1
+  ) {
+    firstIndex =
+      requestedIndexes[0];
+
+    secondIndex =
+      firstIndex === 0
+        ? 1
+        : 0;
+  }
+
+  const firstContextProduct =
+    recentProducts[firstIndex];
+
+  const secondContextProduct =
+    recentProducts[secondIndex];
+
+  if (
+    !firstContextProduct ||
+    !secondContextProduct
+  ) {
+    return createChatbotResponse({
+      reply:
+        "I could not find both of those products in the recent results. Please choose two products that were shown.",
+
+      confidence: 0.6,
+
+      intent:
+        "product_comparison_invalid_reference",
+
+      suggestions: [
+        "Compare the first and second",
+        "Compare the second and third",
+      ],
+    });
+  }
+
+  const productCodes = [
+    firstContextProduct.code,
+    secondContextProduct.code,
+  ].filter(Boolean);
+
+  let databaseProducts = [];
+
+  if (productCodes.length > 0) {
+    databaseProducts =
+      await Product.find({
+        code: {
+          $in: productCodes,
+        },
+      }).lean();
+  }
+
+  const resolveFullProduct = (
+    contextProduct,
+  ) => {
+    const databaseProduct =
+      databaseProducts.find(
+        (product) =>
+          product.code ===
+          contextProduct.code,
+      );
+
+    return (
+      databaseProduct ||
+      contextProduct
+    );
+  };
+
+  const firstProduct =
+    resolveFullProduct(
+      firstContextProduct,
+    );
+
+  const secondProduct =
+    resolveFullProduct(
+      secondContextProduct,
+    );
+
+  const firstBranches =
+    firstProduct.branchAvailability
+      ? getAvailableBranches(
+          firstProduct,
+        )
+      : firstProduct.availableBranches ||
+        [];
+
+  const secondBranches =
+    secondProduct.branchAvailability
+      ? getAvailableBranches(
+          secondProduct,
+        )
+      : secondProduct.availableBranches ||
+        [];
+
+  const firstName =
+    firstProduct.name ||
+    firstProduct.code ||
+    "Product 1";
+
+  const secondName =
+    secondProduct.name ||
+    secondProduct.code ||
+    "Product 2";
+
+  return createChatbotResponse({
+    reply:
+      `Here is a comparison between ${firstName} and ${secondName}.`,
+
+    confidence: 0.98,
+
+    intent:
+      "product_comparison",
+
+    details: [
+      createDetail(
+        "Products",
+        `${firstName} vs ${secondName}`,
+      ),
+
+      createDetail(
+        "Price",
+        `${formatComparisonValue(
+          firstProduct.price,
+        )} vs ${formatComparisonValue(
+          secondProduct.price,
+        )}`,
+      ),
+
+      createDetail(
+        "Weight",
+        `${formatComparisonValue(
+          firstProduct.weight,
+        )} vs ${formatComparisonValue(
+          secondProduct.weight,
+        )}`,
+      ),
+
+      createDetail(
+        "Purity",
+        `${formatComparisonValue(
+          firstProduct.purity,
+        )} vs ${formatComparisonValue(
+          secondProduct.purity,
+        )}`,
+      ),
+
+      createDetail(
+        "Collection",
+        `${formatComparisonValue(
+          firstProduct.collection,
+        )} vs ${formatComparisonValue(
+          secondProduct.collection,
+        )}`,
+      ),
+
+      createDetail(
+        "Available Branches",
+        `${firstBranches.length
+          ? firstBranches.join(", ")
+          : "None"} vs ${
+          secondBranches.length
+            ? secondBranches.join(", ")
+            : "None"
+        }`,
+      ),
+    ],
+
+    products: [
+      formatProductForChat(
+        firstProduct,
+      ),
+
+      formatProductForChat(
+        secondProduct,
+      ),
+    ],
+
+    actions: [
+      createExpertAction(
+        customerQuestion,
+      ),
+    ],
+
+    suggestions: [
+      "Tell me more about the first one",
+      "Tell me more about the second one",
+      "Which one is available in Bengaluru?",
+    ],
+  });
+};
+
 const canHandleProductIntent = (
   customerQuestion
 ) => {
@@ -632,10 +979,22 @@ const canHandleProductIntent = (
 };
 
 const handleProductIntent = async (
-  customerQuestion
+  customerQuestion,
+  conversationContext = [],
 ) => {
   const message =
     normalizeText(customerQuestion);
+
+    if (
+  isProductComparisonQuestion(
+    customerQuestion,
+  )
+) {
+  return compareProducts({
+    customerQuestion,
+    conversationContext,
+  });
+}
 
   const productCode =
     findProductCode(message);
@@ -664,8 +1023,10 @@ const handleProductIntent = async (
 
 export {
   canHandleProductIntent,
+  compareProducts,
   formatProductForChat,
   getAvailableBranches,
   getUnavailableBranches,
   handleProductIntent,
+  isProductComparisonQuestion,
 };

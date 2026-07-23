@@ -78,20 +78,53 @@ function Chatbot() {
   ]);
 
   const conversationContext = useMemo(() => {
-    return messages
-      .filter(
-        (message) =>
-          ["customer", "bot"].includes(message.sender) &&
-          typeof message.text === "string" &&
-          message.text.trim()
-      )
-      .slice(-10)
-      .map((message) => ({
-        sender: message.sender,
-        text: message.text.trim(),
-      }));
-  }, [messages]);
+  return messages
+    .filter(
+      (message) =>
+        ["customer", "bot"].includes(message.sender) &&
+        typeof message.text === "string" &&
+        message.text.trim()
+    )
+    .slice(-10)
+    .map((message) => ({
+      sender: message.sender,
 
+      text: message.text.trim(),
+
+      intent: message.intent || "",
+
+      products: Array.isArray(message.products)
+        ? message.products.map((product) => ({
+            id: product._id || product.id || "",
+            code: product.code || "",
+            name: product.name || "",
+            category: product.category || "",
+            type: product.type || "",
+            collection: product.collection || "",
+            price: product.price || "",
+            purity: product.purity || "",
+            weight: product.weight || "",
+            availableBranches:
+              product.availableBranches || [],
+            unavailableBranches:
+              product.unavailableBranches || [],
+          }))
+        : [],
+
+      relatedProduct: message.relatedProduct
+        ? {
+            id:
+              message.relatedProduct._id ||
+              message.relatedProduct.id ||
+              "",
+            code:
+              message.relatedProduct.code || "",
+            name:
+              message.relatedProduct.name || "",
+          }
+        : null,
+    }));
+}, [messages]);
   const submitMessage = async (messageText) => {
     const trimmedMessage = messageText.trim();
 

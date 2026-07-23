@@ -1,44 +1,79 @@
-const API_BASE_URL = "http://localhost:5000/api/gold-prediction";
+import { GOLD_API_BASE_URL } from "./apiConfig";
 
-const fetchJson = async (url) => {
-  const response = await fetch(url);
+async function fetchJson(path, options = {}) {
+  let response;
 
-  const data = await response.json();
+  try {
+    response = await fetch(
+      `${GOLD_API_BASE_URL}${path}`,
+      {
+        ...options,
+        headers: {
+          Accept: "application/json",
+          ...options.headers,
+        },
+      },
+    );
+  } catch (networkError) {
+    console.error(
+      "Gold prediction network error:",
+      networkError,
+    );
 
-  if (!response.ok || !data.success) {
     throw new Error(
-      data.message ||
-        data.detail ||
-        "Unable to retrieve gold prediction data."
+      "The gold prediction service is unavailable. Confirm that it is running on port 8001.",
+    );
+  }
+
+  const data = await response
+    .json()
+    .catch(() => null);
+
+  if (!response.ok) {
+    throw new Error(
+      data?.detail ||
+        data?.message ||
+        `Gold prediction request failed with status ${response.status}.`,
+    );
+  }
+
+  if (data?.success === false) {
+    throw new Error(
+      data?.detail ||
+        data?.message ||
+        "Unable to retrieve gold prediction data.",
     );
   }
 
   return data;
-};
+}
 
-export const getGoldPrediction = async () => {
-  return fetchJson(API_BASE_URL);
-};
+export async function getGoldPrediction() {
+  return fetchJson("/prediction");
+}
 
-export const getGoldHistory = async (days = 90) => {
+export async function getGoldHistory(days = 90) {
+  const numericDays = Number(days);
+
   const safeDays = Math.min(
-    Math.max(Number(days) || 90, 7),
-    365
+    Math.max(
+      Number.isFinite(numericDays)
+        ? Math.round(numericDays)
+        : 90,
+      7,
+    ),
+    365,
   );
 
   return fetchJson(
-    `${API_BASE_URL}/history?days=${safeDays}`
+    `/history?days=${safeDays}`,
   );
-};
+}
 
-export const getGoldModelInfo = async () => {
-  return fetchJson(
-    `${API_BASE_URL}/model-info`
-  );
-};
+export async function getGoldModelInfo() {
+  return fetchJson("/model-info");
+}
 
-export const getGoldPredictionHealth = async () => {
-  return fetchJson(
-    `${API_BASE_URL}/health`
-  );
-};
+export async function getGoldPredictionHealth() {
+  return fetchJson("/health");
+}
