@@ -1,3 +1,5 @@
+import muliyaLogo from "../assets/Logo.svg";
+
 import {
   useEffect,
   useRef,
@@ -446,6 +448,10 @@ function Navbar() {
               Gold Rate
             </Link>
 
+            <Link to="/gold-buying-plans">
+              Gold Buying Plans
+            </Link>
+            
             <Link to="/silver">
               Silver Jewellery
             </Link>
@@ -460,25 +466,16 @@ function Navbar() {
       <header className="main-navbar">
         <div className="navbar-container">
           <Link
-            to="/"
-            className="brand-logo"
-            aria-label="Muliya Gold and Diamonds home"
-          >
-            <div
-              className="brand-mark"
-              aria-hidden="true"
-            >
-              M
-            </div>
-
-            <div>
-              <h2>Muliya</h2>
-
-              <p>
-                Gold &amp; Diamonds
-              </p>
-            </div>
-          </Link>
+  to="/"
+  className="brand-logo official-brand-logo"
+  aria-label="Muliya Gold and Diamonds home"
+>
+  <img
+    src={muliyaLogo}
+    alt="Muliya Gold & Diamonds"
+    className="official-navbar-logo"
+  />
+</Link>
 
           <nav
             id="main-navigation"

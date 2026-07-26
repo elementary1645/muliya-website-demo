@@ -26,11 +26,55 @@ import {
 } from "./responseBuilder.js";
 
 
+/*
+  ---------------------------------------------------------
+  BASIC HELPERS
+  ---------------------------------------------------------
+*/
+
 const normalizeText = (value) => {
   return String(value || "")
     .trim()
     .toLowerCase()
     .replace(/\s+/g, " ");
+};
+
+
+/*
+  ---------------------------------------------------------
+  KNOWN MULIYA BRANCHES
+  ---------------------------------------------------------
+*/
+
+const branchAliases = {
+  bengaluru: "Bengaluru",
+  bangalore: "Bengaluru",
+  puttur: "Puttur",
+  madikeri: "Madikeri",
+};
+
+
+const findMentionedBranch = (
+  customerQuestion,
+) => {
+  const message =
+    normalizeText(customerQuestion);
+
+  for (
+    const [alias, branch]
+    of Object.entries(branchAliases)
+  ) {
+    const pattern = new RegExp(
+      `\\b${alias}\\b`,
+      "i",
+    );
+
+    if (pattern.test(message)) {
+      return branch;
+    }
+  }
+
+  return null;
 };
 
 
@@ -61,7 +105,9 @@ const getRecentMessages = (
 };
 
 
-const getValidContextProducts = (message) => {
+const getValidContextProducts = (
+  message,
+) => {
   if (
     !message ||
     !Array.isArray(message.products)
@@ -81,25 +127,37 @@ const getValidContextProducts = (message) => {
 };
 
 
+/*
+  ---------------------------------------------------------
+  FIND MOST RECENT BOT PRODUCT MESSAGE
+  ---------------------------------------------------------
+*/
+
 const getMostRecentBotProductMessage = (
   conversationContext = [],
 ) => {
   const recentMessages =
-    getRecentMessages(conversationContext);
+    getRecentMessages(
+      conversationContext,
+    );
 
   for (
-    let index = recentMessages.length - 1;
+    let index =
+      recentMessages.length - 1;
     index >= 0;
     index -= 1
   ) {
-    const message = recentMessages[index];
+    const message =
+      recentMessages[index];
 
     if (message.sender !== "bot") {
       continue;
     }
 
     const products =
-      getValidContextProducts(message);
+      getValidContextProducts(
+        message,
+      );
 
     if (
       products.length > 0 ||
@@ -113,37 +171,85 @@ const getMostRecentBotProductMessage = (
 };
 
 
+/*
+  ---------------------------------------------------------
+  FIND MOST RECENT SELECTED PRODUCT
+
+  This is important for conversations like:
+
+  Customer:
+  "Is the second one available in Bengaluru?"
+
+  Bot:
+  responds about MJD2006
+
+  Customer:
+  "What about Madikeri?"
+
+  We use the bot's relatedProduct first.
+  ---------------------------------------------------------
+*/
+
 const findRecentProductCode = (
   conversationContext = [],
 ) => {
   const recentMessages =
-    getRecentMessages(conversationContext);
+    getRecentMessages(
+      conversationContext,
+    );
 
   for (
-    let index = recentMessages.length - 1;
+    let index =
+      recentMessages.length - 1;
     index >= 0;
     index -= 1
   ) {
-    const message = recentMessages[index];
+    const message =
+      recentMessages[index];
 
-    if (message.relatedProduct?.code) {
+    /*
+      Strongest context:
+      bot explicitly marked a related product.
+    */
+
+    if (
+      message.sender === "bot" &&
+      message.relatedProduct?.code
+    ) {
       return String(
         message.relatedProduct.code,
       ).toUpperCase();
     }
 
-    const products =
-      getValidContextProducts(message);
+    /*
+      Next strongest context:
+      bot response contained exactly one product.
+    */
 
-    if (products[0]?.code) {
+    const products =
+      getValidContextProducts(
+        message,
+      );
+
+    if (
+      message.sender === "bot" &&
+      products.length === 1 &&
+      products[0]?.code
+    ) {
       return String(
         products[0].code,
       ).toUpperCase();
     }
 
-    const codeMatch = message.text.match(
-      /\bMJ[A-Z]\d{4}\b/i,
-    );
+    /*
+      Fallback:
+      product code mentioned in conversation text.
+    */
+
+    const codeMatch =
+      message.text.match(
+        /\bMJ[A-Z]\d{4}\b/i,
+      );
 
     if (codeMatch) {
       return codeMatch[0].toUpperCase();
@@ -156,7 +262,7 @@ const findRecentProductCode = (
 
 /*
   ---------------------------------------------------------
-  PRODUCT REFERENCE RESOLUTION
+  ORDINAL PRODUCT REFERENCES
   ---------------------------------------------------------
 */
 
@@ -187,16 +293,21 @@ const findRequestedProductIndex = (
   customerQuestion,
 ) => {
   const message =
-    normalizeText(customerQuestion);
+    normalizeText(
+      customerQuestion,
+    );
 
   for (
     const [word, index]
-    of Object.entries(ordinalIndexMap)
+    of Object.entries(
+      ordinalIndexMap,
+    )
   ) {
-    const pattern = new RegExp(
-      `\\b${word}\\b`,
-      "i",
-    );
+    const pattern =
+      new RegExp(
+        `\\b${word}\\b`,
+        "i",
+      );
 
     if (pattern.test(message)) {
       return index;
@@ -214,45 +325,79 @@ const findRequestedProductIndex = (
 };
 
 
+/*
+  ---------------------------------------------------------
+  PRODUCT REFERENCE DETECTION
+  ---------------------------------------------------------
+*/
+
 const containsProductReference = (
   customerQuestion,
 ) => {
   const message =
-    normalizeText(customerQuestion);
+    normalizeText(
+      customerQuestion,
+    );
 
   const referencePatterns = [
     /\b(first|second|third|fourth|fifth)\b/,
     /\b(1st|2nd|3rd|4th|5th)\b/,
+
     /\b(last|latest)\s+(one|product|item|design)\b/,
+
     /\bthis product\b/,
     /\bthat product\b/,
+
     /\bthis jewellery\b/,
     /\bthat jewellery\b/,
+
     /\bthis jewelry\b/,
     /\bthat jewelry\b/,
+
     /\bthis one\b/,
     /\bthat one\b/,
     /\bthe one\b/,
+
     /\bit\b/,
     /\bits\b/,
+
     /\bthat ring\b/,
     /\bthis ring\b/,
+
     /\bthat necklace\b/,
     /\bthis necklace\b/,
+
     /\bthat design\b/,
     /\bthis design\b/,
+
+    /\bcheapest\b/,
+    /\bmost expensive\b/,
+    /\bcostliest\b/,
+    /\blowest price\b/,
+    /\bhighest price\b/,
   ];
 
   return referencePatterns.some(
-    (pattern) => pattern.test(message),
+    (pattern) =>
+      pattern.test(message),
   );
 };
 
+
+/*
+  ---------------------------------------------------------
+  RESOLVE ORDINAL PRODUCT
+  ---------------------------------------------------------
+*/
 
 const resolveReferencedProduct = ({
   customerQuestion,
   conversationContext,
 }) => {
+  /*
+    Explicit code always wins.
+  */
+
   if (
     /\bMJ[A-Z]\d{4}\b/i.test(
       customerQuestion,
@@ -288,6 +433,10 @@ const resolveReferencedProduct = ({
       customerQuestion,
     );
 
+  /*
+    Last product.
+  */
+
   if (
     requestedIndex === "last" &&
     products.length > 0
@@ -297,20 +446,35 @@ const resolveReferencedProduct = ({
     ];
   }
 
+  /*
+    First / second / third etc.
+  */
+
   if (
-    Number.isInteger(requestedIndex) &&
+    Number.isInteger(
+      requestedIndex,
+    ) &&
     products[requestedIndex]
   ) {
-    return products[requestedIndex];
+    return products[
+      requestedIndex
+    ];
   }
+
+  /*
+    Generic follow-up after a single
+    selected product.
+  */
 
   if (
     recentBotMessage.relatedProduct
   ) {
-    return recentBotMessage.relatedProduct;
+    return (
+      recentBotMessage.relatedProduct
+    );
   }
 
-  if (products.length > 0) {
+  if (products.length === 1) {
     return products[0];
   }
 
@@ -320,7 +484,7 @@ const resolveReferencedProduct = ({
 
 /*
   ---------------------------------------------------------
-  FOLLOW-UP QUESTION DETECTION
+  PRODUCT FOLLOW-UP DETECTION
   ---------------------------------------------------------
 */
 
@@ -328,42 +492,64 @@ const isProductFollowUpQuestion = (
   customerQuestion,
 ) => {
   const message =
-    normalizeText(customerQuestion);
+    normalizeText(
+      customerQuestion,
+    );
 
   const followUpKeywords = [
     "this product",
     "that product",
+
     "this jewellery",
     "that jewellery",
+
     "this jewelry",
     "that jewelry",
+
     "this one",
     "that one",
+
     "the first",
     "the second",
     "the third",
     "the fourth",
     "the fifth",
+
     "first ring",
     "second ring",
     "third ring",
+
     "last one",
+
+    "cheapest",
+    "most expensive",
+    "costliest",
+
     "it available",
     "is it available",
+
     "where is it available",
+
     "which branches have it",
     "which branch has it",
+
     "book appointment for it",
     "appointment for it",
+
     "enquire about it",
     "enquiry about it",
+
     "tell me more about it",
     "more details",
+
     "what is its price",
     "what is the price",
+
     "what is its purity",
     "what is its weight",
+
     "how much is it",
+
     "show similar products",
   ];
 
@@ -373,11 +559,27 @@ const isProductFollowUpQuestion = (
     ) ||
     followUpKeywords.some(
       (keyword) =>
-        message.includes(keyword),
+        message.includes(
+          keyword,
+        ),
     )
   );
 };
 
+
+/*
+  ---------------------------------------------------------
+  ENRICH NORMAL PRODUCT FOLLOW-UP
+
+  Example:
+
+  "What is the price of the second one?"
+
+  becomes:
+
+  "What is the price of the second one? MJD2006"
+  ---------------------------------------------------------
+*/
 
 const enrichProductFollowUp = (
   customerQuestion,
@@ -418,7 +620,120 @@ const enrichProductFollowUp = (
     return customerQuestion;
   }
 
-  return `${customerQuestion} ${productCode}`;
+  return (
+    `${customerQuestion} ` +
+    `${productCode}`
+  );
+};
+
+
+/*
+  ---------------------------------------------------------
+  BRANCH FOLLOW-UP DETECTION
+
+  Examples:
+
+  "What about Madikeri?"
+  "And Puttur?"
+  "How about Bengaluru?"
+  "What about Bangalore?"
+  ---------------------------------------------------------
+*/
+
+const isBranchFollowUpQuestion = ({
+  customerQuestion,
+  conversationContext = [],
+}) => {
+  const branch =
+    findMentionedBranch(
+      customerQuestion,
+    );
+
+  if (!branch) {
+    return false;
+  }
+
+  const message =
+    normalizeText(
+      customerQuestion,
+    );
+
+  /*
+    Explicit availability wording is
+    obviously product-related when recent
+    product context exists.
+  */
+
+  const followUpPhrases = [
+    "what about",
+    "how about",
+    "and bengaluru",
+    "and bangalore",
+    "and puttur",
+    "and madikeri",
+    "available in",
+    "availability in",
+    "stock in",
+  ];
+
+  const hasFollowUpPhrase =
+    followUpPhrases.some(
+      (phrase) =>
+        message.includes(phrase),
+    );
+
+  if (!hasFollowUpPhrase) {
+    return false;
+  }
+
+  const recentProductCode =
+    findRecentProductCode(
+      conversationContext,
+    );
+
+  return Boolean(
+    recentProductCode,
+  );
+};
+
+
+/*
+  ---------------------------------------------------------
+  ENRICH BRANCH FOLLOW-UP
+
+  "What about Madikeri?"
+
+  becomes:
+
+  "Is MJD2006 available in Madikeri?"
+  ---------------------------------------------------------
+*/
+
+const enrichBranchFollowUp = (
+  customerQuestion,
+  conversationContext,
+) => {
+  const branch =
+    findMentionedBranch(
+      customerQuestion,
+    );
+
+  const productCode =
+    findRecentProductCode(
+      conversationContext,
+    );
+
+  if (
+    !branch ||
+    !productCode
+  ) {
+    return customerQuestion;
+  }
+
+  return (
+    `Is ${productCode} available ` +
+    `in ${branch}?`
+  );
 };
 
 
@@ -432,7 +747,9 @@ const isDirectExpertRequest = (
   customerQuestion,
 ) => {
   const message =
-    normalizeText(customerQuestion);
+    normalizeText(
+      customerQuestion,
+    );
 
   const expertKeywords = [
     "connect me with an expert",
@@ -452,7 +769,9 @@ const isDirectExpertRequest = (
 
   return expertKeywords.some(
     (keyword) =>
-      message.includes(keyword),
+      message.includes(
+        keyword,
+      ),
   );
 };
 
@@ -467,7 +786,9 @@ const isProductAvailabilityQuestion = (
   customerQuestion,
 ) => {
   const message =
-    normalizeText(customerQuestion);
+    normalizeText(
+      customerQuestion,
+    );
 
   const containsProductCode =
     /\bMJ[A-Z]\d{4}\b/i.test(
@@ -488,7 +809,9 @@ const isProductAvailabilityQuestion = (
     containsProductCode &&
     availabilityKeywords.some(
       (keyword) =>
-        message.includes(keyword),
+        message.includes(
+          keyword,
+        ),
     )
   );
 };
@@ -543,7 +866,9 @@ const routeChatbotIntent = async ({
   conversationContext = [],
 }) => {
   const normalizedQuestion =
-    normalizeText(customerQuestion);
+    normalizeText(
+      customerQuestion,
+    );
 
 
   /*
@@ -557,7 +882,8 @@ const routeChatbotIntent = async ({
 
       confidence: 1,
 
-      intent: "empty_message",
+      intent:
+        "empty_message",
 
       actions: [
         createExpertAction(""),
@@ -590,23 +916,15 @@ const routeChatbotIntent = async ({
 
 
   /*
-    ---------------------------------------------------------
-    IMPORTANT:
+    3. PRODUCT COMPARISON
 
-    Product comparisons must be checked using the ORIGINAL
-    customer question.
+    Comparison must receive the ORIGINAL
+    question so both ordinal references
+    remain intact.
 
-    We do NOT enrich:
+    Example:
 
     "Compare the first and second"
-
-    into:
-
-    "Compare the first and second MJG1001"
-
-    because the comparison handler needs both ordinal
-    references.
-    ---------------------------------------------------------
   */
 
   if (
@@ -622,15 +940,42 @@ const routeChatbotIntent = async ({
 
 
   /*
-    3. CONVERSATION FOLLOW-UP RESOLUTION
+    4. BRANCH FOLLOW-UP MEMORY
 
-    Example:
+    Example conversation:
 
-    "Is the first ring available?"
+    "Is the second one available in Bengaluru?"
+
+    followed by:
+
+    "What about Madikeri?"
 
     becomes:
 
-    "Is the first ring available? MJG1006"
+    "Is MJD2006 available in Madikeri?"
+  */
+
+  if (
+    isBranchFollowUpQuestion({
+      customerQuestion,
+      conversationContext,
+    })
+  ) {
+    const branchQuestion =
+      enrichBranchFollowUp(
+        customerQuestion,
+        conversationContext,
+      );
+
+    return handleProductIntent(
+      branchQuestion,
+      conversationContext,
+    );
+  }
+
+
+  /*
+    5. NORMAL PRODUCT FOLLOW-UP MEMORY
   */
 
   const enrichedQuestion =
@@ -641,13 +986,9 @@ const routeChatbotIntent = async ({
 
 
   /*
-    4. PRODUCT AVAILABILITY
+    6. PRODUCT AVAILABILITY
 
-    Must be before showroom routing because:
-
-    "Which branch has MJG1006?"
-
-    is a product question, not a generic showroom question.
+    Must run before showroom routing.
   */
 
   if (
@@ -663,7 +1004,7 @@ const routeChatbotIntent = async ({
 
 
   /*
-    5. METAL RATES
+    7. METAL RATES
   */
 
   if (
@@ -678,7 +1019,8 @@ const routeChatbotIntent = async ({
 
 
   /*
-    6. PRODUCT SEARCH / PRODUCT DETAILS
+    8. PRODUCT SEARCH / DETAILS /
+       CONTEXTUAL PRODUCT QUESTIONS
   */
 
   if (
@@ -694,7 +1036,7 @@ const routeChatbotIntent = async ({
 
 
   /*
-    7. SHOWROOM INFORMATION
+    9. SHOWROOM INFORMATION
   */
 
   if (
@@ -709,7 +1051,7 @@ const routeChatbotIntent = async ({
 
 
   /*
-    8. SUPPORT FEATURES
+    10. SUPPORT FEATURES
 
     Appointments
     Enquiries
@@ -732,7 +1074,7 @@ const routeChatbotIntent = async ({
 
 
   /*
-    9. UNKNOWN QUESTION
+    11. UNKNOWN QUESTION
   */
 
   return createUnknownResponse(

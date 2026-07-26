@@ -1,278 +1,336 @@
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
-  Crown,
-  Gem,
-  Heart,
-  Sparkles,
-  Star,
-  WandSparkles,
   CalendarDays,
+  Gem,
+  WandSparkles,
 } from "lucide-react";
+
+import mahathiImage from "../assets/collections/mahathi.png";
+import amuliyaImage from "../assets/collections/amuliya.png";
+import indianBridalImage from "../assets/collections/indian-bridal.png";
+import indianEthnicImage from "../assets/collections/indian-ethnic.png";
+import rubyEmeraldImage from "../assets/collections/ruby-and-emerald.png";
+import apsaraRoseGoldImage from "../assets/collections/apsara-rose-gold.png";
+
 
 const collections = [
   {
-    name: "Bridal Collection",
-    slug: "Bridal",
+    id: 1,
+    name: "Mahathi",
+    subtitle: "A Gold Collection",
     description:
-      "Statement jewellery designed for weddings, receptions and traditional celebrations.",
-    icon: Crown,
-    number: "01",
+      "A distinctive antique-inspired gold jewellery collection celebrating timeless Indian craftsmanship and traditional elegance.",
+    image: mahathiImage,
+    slug: "Mahathi",
   },
   {
-    name: "Wedding Collection",
-    slug: "Wedding",
+    id: 2,
+    name: "Amuliya",
+    subtitle: "Collection of Diamonds",
     description:
-      "Elegant gold and diamond pieces curated for every wedding ceremony.",
-    icon: Heart,
-    number: "02",
+      "Elegant diamond jewellery designed with refined detailing for celebrations, special occasions and contemporary styling.",
+    image: amuliyaImage,
+    slug: "Amuliya",
   },
   {
-    name: "Temple Collection",
-    slug: "Temple",
+    id: 3,
+    name: "Indian Bridal",
+    subtitle: "Wedding Collection",
     description:
-      "Traditional designs inspired by heritage motifs and classical craftsmanship.",
-    icon: Sparkles,
-    number: "03",
+      "Grand bridal jewellery designed for unforgettable wedding moments, combining traditional richness with statement craftsmanship.",
+    image: indianBridalImage,
+    slug: "Indian Bridal",
   },
   {
-    name: "Everyday Collection",
-    slug: "Everyday",
+    id: 4,
+    name: "Indian Ethnic",
+    subtitle: "Traditional Collection",
     description:
-      "Lightweight and versatile jewellery designed for graceful daily wear.",
-    icon: Star,
-    number: "04",
+      "Jewellery rooted in Indian heritage, created for festivals, traditional occasions and timeless ethnic styling.",
+    image: indianEthnicImage,
+    slug: "Indian Ethnic",
   },
   {
-    name: "Luxury Collection",
-    slug: "Luxury",
+    id: 5,
+    name: "Ruby and Emerald",
+    subtitle: "Gemstone Collection",
     description:
-      "Premium jewellery featuring refined details, precious stones and bold designs.",
-    icon: Gem,
-    number: "05",
+      "A vibrant collection featuring the richness of ruby and emerald tones in elegant jewellery crafted for statement occasions.",
+    image: rubyEmeraldImage,
+    slug: "Ruby and Emerald",
   },
   {
-    name: "Modern Collection",
-    slug: "Modern",
+    id: 6,
+    name: "Apsara Rose Gold",
+    subtitle: "Rose Gold Collection",
     description:
-      "Contemporary jewellery with clean lines, minimal styling and modern appeal.",
-    icon: WandSparkles,
-    number: "06",
-  },
-  {
-    name: "Traditional Collection",
-    slug: "Traditional",
-    description:
-      "Timeless jewellery inspired by Indian culture, festivals and family traditions.",
-    icon: Crown,
-    number: "07",
-  },
-  {
-    name: "Men's Collection",
-    slug: "Men",
-    description:
-      "Chains, rings, bracelets and statement pieces designed for men.",
-    icon: Gem,
-    number: "08",
-  },
-  {
-    name: "Kids Collection",
-    slug: "Kids",
-    description:
-      "Playful, lightweight and comfortable jewellery created for children.",
-    icon: Star,
-    number: "09",
-  },
-  {
-    name: "Festive Collection",
-    slug: "Festive",
-    description:
-      "Celebration-ready jewellery for festivals, family occasions and special moments.",
-    icon: Sparkles,
-    number: "10",
+      "Contemporary rose gold jewellery combining soft elegance with modern styling for celebrations and everyday sophistication.",
+    image: apsaraRoseGoldImage,
+    slug: "Apsara Rose Gold",
   },
 ];
 
+
 function CollectionsPage() {
   return (
-    <main className="collections-page">
-      <section className="collections-hero">
-        <div className="collections-hero-decoration collections-hero-decoration-one" />
-        <div className="collections-hero-decoration collections-hero-decoration-two" />
+    <main className="signature-collections-page">
 
-        <div className="container collections-hero-content">
-          <div className="collections-hero-copy">
-            <p className="section-eyebrow">Curated Jewellery</p>
+      {/* =====================================================
+          HERO
+          ===================================================== */}
 
-            <h1>
-              Jewellery Collections
-              <span> Crafted for Every Story</span>
-            </h1>
+      <section className="signature-collections-hero">
+        <div className="signature-hero-decoration signature-hero-decoration-one" />
+        <div className="signature-hero-decoration signature-hero-decoration-two" />
 
-            <p className="collections-hero-description">
-              Discover jewellery created for weddings, celebrations, everyday
-              elegance and unforgettable moments.
+        <div className="container signature-hero-layout">
+          <div className="signature-hero-copy">
+            <p className="section-eyebrow">
+              Muliya Signature Collections
             </p>
 
-            <div className="collections-hero-actions">
-              <Link to="/products" className="primary-button">
-                View All Jewellery
-                <ArrowRight size={18} aria-hidden="true" />
+            <h1>
+              Jewellery Created
+              <span> for Every Story</span>
+            </h1>
+
+            <p>
+              Discover Muliya's signature jewellery collections —
+              from timeless gold and diamonds to bridal,
+              traditional, gemstone and contemporary rose gold
+              designs.
+            </p>
+
+            <div className="signature-hero-actions">
+              <Link
+                to="/products"
+                className="signature-primary-btn"
+              >
+                Explore All Jewellery
+                <ArrowRight size={18} />
               </Link>
 
-              <Link to="/appointment" className="secondary-button">
+              <Link
+                to="/appointment"
+                className="signature-secondary-btn"
+              >
                 Book a Consultation
               </Link>
             </div>
           </div>
 
-          <div className="collections-hero-showcase" aria-hidden="true">
-            <div className="collections-hero-jewel">
-              <Gem size={82} />
+          <div className="signature-hero-highlight">
+            <div className="signature-hero-jewel">
+              <Gem size={58} />
             </div>
 
-            <div className="collections-hero-badge">
-              <span>10</span>
-              <small>Signature Collections</small>
-            </div>
+            <strong>6</strong>
+
+            <span>
+              Signature
+              <br />
+              Collections
+            </span>
           </div>
         </div>
       </section>
 
-      <section className="collections-section">
+
+      {/* =====================================================
+          COLLECTIONS
+          ===================================================== */}
+
+      <section className="signature-collections-section">
         <div className="container">
-          <div className="section-heading collections-heading">
+
+          <div className="signature-section-heading">
             <div>
-              <p className="section-eyebrow">Explore by Style</p>
-              <h2>Collections for Every Occasion</h2>
+              <p className="section-eyebrow">
+                Discover the Collections
+              </p>
+
+              <h2>
+                Six Expressions of Muliya
+              </h2>
             </div>
 
             <p>
-              Browse signature jewellery styles created for weddings,
-              celebrations, modern living and timeless traditions.
+              Explore collections designed around tradition,
+              weddings, gemstones, diamonds and modern
+              jewellery styling.
             </p>
           </div>
 
-          <div className="collections-grid">
-            {collections.map((collection) => {
-              const Icon = collection.icon;
 
-              return (
-                <article
-                  key={collection.slug}
-                  className="collection-card"
+          <div className="signature-collections-grid">
+            {collections.map((collection) => (
+              <article
+                className="signature-collection-card"
+                key={collection.id}
+              >
+                <Link
+                  to={`/products?collection=${encodeURIComponent(
+                    collection.slug
+                  )}`}
+                  className="signature-collection-image"
                 >
-                  <span className="collection-card-number">
-                    {collection.number}
-                  </span>
+                  <img
+                    src={collection.image}
+                    alt={collection.name}
+                    loading="lazy"
+                  />
+                </Link>
 
-                  <div className="collection-card-icon" aria-hidden="true">
-                    <Icon size={30} />
-                  </div>
+                <div className="signature-collection-content">
+                  <p className="signature-collection-subtitle">
+                    {collection.subtitle}
+                  </p>
 
-                  <div className="collection-card-content">
-                    <h3>{collection.name}</h3>
+                  <h3>
+                    {collection.name}
+                  </h3>
 
-                    <p>{collection.description}</p>
+                  <p className="signature-collection-description">
+                    {collection.description}
+                  </p>
 
-                    <Link
-                      to={`/products?collection=${encodeURIComponent(
-                        collection.slug,
-                      )}`}
-                      className="collection-card-link"
-                    >
-                      Explore Collection
-                      <ArrowRight size={17} aria-hidden="true" />
-                    </Link>
-                  </div>
-                </article>
-              );
-            })}
+                  <Link
+                    to={`/products?collection=${encodeURIComponent(
+                      collection.slug
+                    )}`}
+                    className="signature-collection-link"
+                  >
+                    Explore Collection
+                    <ArrowRight size={17} />
+                  </Link>
+                </div>
+              </article>
+            ))}
           </div>
+
         </div>
       </section>
 
-      <section className="collections-feature-section">
-        <div className="container collections-feature-grid">
-          <div className="collections-feature-content">
-            <div className="collections-feature-icon" aria-hidden="true">
-              <WandSparkles size={28} />
+
+      {/* =====================================================
+          AI DISCOVERY
+          ===================================================== */}
+
+      <section className="signature-discovery-section">
+        <div className="container signature-discovery-grid">
+
+          <div className="signature-discovery-copy">
+            <div className="signature-discovery-icon">
+              <WandSparkles size={27} />
             </div>
 
-            <p className="section-eyebrow">AI Jewellery Discovery</p>
-
-            <h2>Find Jewellery That Matches Your Inspiration</h2>
-
-            <p>
-              Upload any jewellery image and let our AI search the Muliya
-              catalogue for visually similar designs.
+            <p className="section-eyebrow">
+              AI Jewellery Discovery
             </p>
 
-            <div className="collections-feature-actions">
-              <Link to="/image-search" className="primary-button">
+            <h2>
+              Have a Jewellery Design in Mind?
+            </h2>
+
+            <p>
+              Upload a reference image and let our AI-powered
+              image search find visually similar jewellery
+              available in the Muliya catalogue.
+            </p>
+
+            <div className="signature-discovery-actions">
+              <Link
+                to="/image-search"
+                className="signature-primary-btn"
+              >
                 Try AI Image Search
-                <ArrowRight size={18} aria-hidden="true" />
+                <ArrowRight size={18} />
               </Link>
 
-              <Link to="/products" className="secondary-button">
+              <Link
+                to="/products"
+                className="signature-secondary-dark-btn"
+              >
                 Browse Catalogue
               </Link>
             </div>
-
-            <div className="collections-feature-points">
-              <span>Image-based discovery</span>
-              <span>Visually similar results</span>
-              <span>Instant catalogue matching</span>
-            </div>
           </div>
 
-          <div className="collections-feature-panel">
-            <div className="collections-feature-panel-icon">
-              <Gem size={46} aria-hidden="true" />
+
+          <div className="signature-assistance-card">
+            <div className="signature-assistance-icon">
+              <Gem size={38} />
             </div>
 
-            <p className="collections-feature-panel-label">
+            <p className="signature-assistance-label">
               Personal Jewellery Assistance
             </p>
 
-            <h3>Need Help Choosing the Perfect Piece?</h3>
+            <h3>
+              Need Help Finding the Perfect Piece?
+            </h3>
 
             <p>
-              Meet our jewellery experts for personalised recommendations based
-              on your occasion, style and preferred showroom.
+              Meet a Muliya jewellery expert for personalised
+              recommendations based on your occasion, style
+              and preferred showroom.
             </p>
 
-            <Link to="/appointment" className="collections-panel-button">
-              <CalendarDays size={18} aria-hidden="true" />
+            <Link
+              to="/appointment"
+              className="signature-appointment-btn"
+            >
+              <CalendarDays size={18} />
               Book an Appointment
             </Link>
           </div>
+
         </div>
       </section>
 
-      <section className="collections-final-cta">
-        <div className="container collections-final-cta-content">
+
+      {/* =====================================================
+          FINAL CTA
+          ===================================================== */}
+
+      <section className="signature-final-cta">
+        <div className="container signature-final-cta-layout">
           <div>
-            <p className="section-eyebrow">Discover Muliya</p>
-            <h2>Timeless Craftsmanship, Made Personal</h2>
+            <p className="section-eyebrow">
+              Discover Muliya
+            </p>
+
+            <h2>
+              Experience Jewellery Beyond the Screen
+            </h2>
+
             <p>
-              Explore our complete jewellery catalogue or visit a Muliya
-              showroom for a personalised experience.
+              Explore the complete catalogue online or visit
+              your nearest Muliya showroom for a personalised
+              jewellery experience.
             </p>
           </div>
 
-          <div className="collections-final-cta-actions">
-            <Link to="/products" className="primary-button">
+          <div className="signature-final-actions">
+            <Link
+              to="/products"
+              className="signature-primary-btn"
+            >
               Explore Jewellery
-              <ArrowRight size={18} aria-hidden="true" />
+              <ArrowRight size={18} />
             </Link>
 
-            <Link to="/showrooms" className="secondary-button">
+            <Link
+              to="/showrooms"
+              className="signature-secondary-btn"
+            >
               Find a Showroom
             </Link>
           </div>
         </div>
       </section>
+
     </main>
   );
 }

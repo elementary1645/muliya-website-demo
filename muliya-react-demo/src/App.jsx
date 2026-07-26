@@ -1,18 +1,28 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 
 import Home from "./pages/Home";
 import Gold from "./pages/Gold";
 import Diamond from "./pages/Diamond";
 import Silver from "./pages/Silver";
+
 import ProductDetails from "./pages/ProductDetails";
 import SearchResults from "./pages/SearchResults";
 import Wishlist from "./pages/Wishlist";
 import Compare from "./pages/Compare";
 import BranchProducts from "./pages/BranchProducts";
+import ContactPage from "./pages/ContactPage";
+import GoldBuyingPlansPage from "./pages/GoldBuyingPlansPage";
+
 import ImageSearchPage from "./pages/ImageSearchPage";
 import GoldPredictionPage from "./pages/GoldPredictionPage";
 
 import CollectionsPage from "./pages/CollectionsPage";
+import ShowroomsPage from "./pages/ShowroomsPage";
+import AppointmentPage from "./pages/AppointmentPage";
 
 import Chatbot from "./components/Chatbot";
 
@@ -26,6 +36,7 @@ import AdminAppointmentsPage from "./admin/pages/AdminAppointmentsPage";
 import AdminEnquiriesPage from "./admin/pages/AdminEnquiriesPage";
 import AdminExpertRequestsPage from "./admin/pages/AdminExpertRequestsPage";
 import AdminInventoryPage from "./admin/pages/AdminInventoryPage";
+
 
 function NotFoundPage() {
   return (
@@ -66,8 +77,8 @@ function NotFoundPage() {
             lineHeight: 1.7,
           }}
         >
-          The page you requested may have been moved, renamed, or may no
-          longer exist.
+          The page you requested may have been moved,
+          renamed, or may no longer exist.
         </p>
 
         <a
@@ -89,35 +100,86 @@ function NotFoundPage() {
   );
 }
 
+
 function App() {
   const location = useLocation();
 
-  const isAdminRoute = location.pathname.startsWith("/admin");
+  const isAdminRoute =
+    location.pathname.startsWith(
+      "/admin"
+    );
 
   return (
     <>
       <Routes>
-        {/* Customer website routes */}
 
-        <Route path="/" element={<Home />} />
+        {/* CUSTOMER WEBSITE */}
 
-        <Route path="/gold" element={<Gold />} />
+        <Route
+          path="/"
+          element={<Home />}
+        />
 
-        <Route path="/diamond" element={<Diamond />} />
+        <Route
+          path="/gold"
+          element={<Gold />}
+        />
 
-        <Route path="/silver" element={<Silver />} />
+        <Route
+          path="/diamond"
+          element={<Diamond />}
+        />
 
-        <Route path="/products" element={<SearchResults />} />
+        <Route
+          path="/silver"
+          element={<Silver />}
+        />
 
-        <Route path="/search" element={<SearchResults />} />
+        <Route
+          path="/products"
+          element={<SearchResults />}
+        />
 
-        <Route path="/product/:id" element={<ProductDetails />} />
+        <Route
+          path="/search"
+          element={<SearchResults />}
+        />
 
-        <Route path="/wishlist" element={<Wishlist />} />
+        <Route
+          path="/product/:id"
+          element={<ProductDetails />}
+        />
 
-        <Route path="/compare" element={<Compare />} />
+        <Route
+          path="/wishlist"
+          element={<Wishlist />}
+        />
 
-        <Route path="/collections" element={<CollectionsPage />} />
+        <Route
+          path="/compare"
+          element={<Compare />}
+        />
+
+
+        {/* COLLECTIONS */}
+
+        <Route
+          path="/collections"
+          element={<CollectionsPage />}
+        />
+
+
+        {/* SHOWROOMS */}
+
+        <Route
+          path="/showrooms"
+          element={<ShowroomsPage />}
+        />
+
+        <Route
+          path="/showrooms/:branch"
+          element={<BranchProducts />}
+        />
 
         <Route
           path="/branch/:branch"
@@ -125,9 +187,23 @@ function App() {
         />
 
         <Route
-          path="/showrooms/:branch"
-          element={<BranchProducts />}
+          path="/appointment"
+          element={<AppointmentPage />}
         />
+
+        <Route
+          path="/contact"
+          element={<ContactPage />}
+        />
+
+        <Route
+          path="/gold-buying-plans"
+          element={<GoldBuyingPlansPage />}
+        />
+
+
+
+        {/* AI FEATURES */}
 
         <Route
           path="/image-search"
@@ -139,54 +215,85 @@ function App() {
           element={<GoldPredictionPage />}
         />
 
-        {/* Admin login */}
+
+        {/* ADMIN LOGIN */}
 
         <Route
           path="/admin/login"
           element={<AdminLoginPage />}
         />
 
-        {/* Protected admin routes */}
 
-        <Route element={<AdminProtectedRoute />}>
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
+        {/* PROTECTED ADMIN */}
+
+        <Route
+          element={
+            <AdminProtectedRoute />
+          }
+        >
+          <Route
+            path="/admin"
+            element={<AdminLayout />}
+          >
+            <Route
+              index
+              element={
+                <AdminDashboard />
+              }
+            />
 
             <Route
               path="products"
-              element={<AdminProductsPage />}
+              element={
+                <AdminProductsPage />
+              }
             />
 
             <Route
               path="appointments"
-              element={<AdminAppointmentsPage />}
+              element={
+                <AdminAppointmentsPage />
+              }
             />
 
             <Route
               path="enquiries"
-              element={<AdminEnquiriesPage />}
+              element={
+                <AdminEnquiriesPage />
+              }
             />
 
             <Route
               path="expert-requests"
-              element={<AdminExpertRequestsPage />}
+              element={
+                <AdminExpertRequestsPage />
+              }
             />
 
             <Route
               path="inventory"
-              element={<AdminInventoryPage />}
+              element={
+                <AdminInventoryPage />
+              }
+              
             />
           </Route>
         </Route>
 
-        {/* Fallback route */}
 
-        <Route path="*" element={<NotFoundPage />} />
+        {/* FALLBACK */}
+
+        <Route
+          path="*"
+          element={<NotFoundPage />}
+        />
+
       </Routes>
 
       {!isAdminRoute && <Chatbot />}
     </>
   );
 }
+
 
 export default App;

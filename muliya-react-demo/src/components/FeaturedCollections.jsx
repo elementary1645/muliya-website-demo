@@ -1,65 +1,103 @@
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
+import mahathiImage from "../assets/collections/mahathi.png";
+import amuliyaImage from "../assets/collections/amuliya.png";
+import indianBridalImage from "../assets/collections/indian-bridal.png";
+import indianEthnicImage from "../assets/collections/indian-ethnic.png";
+import rubyEmeraldImage from "../assets/collections/ruby-and-emerald.png";
+import apsaraRoseGoldImage from "../assets/collections/apsara-rose-gold.png";
 
 const collections = [
   {
     id: 1,
-    title: "Bridal Collection",
-    subtitle: "For the big day",
-    description:
-      "Traditional and elegant jewellery designs crafted for weddings and grand celebrations.",
-    image:
-      "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=1000&q=85",
+    title: "Mahathi",
+    subtitle: "A Gold Collection",
+    image: mahathiImage,
   },
   {
     id: 2,
-    title: "Temple Collection",
-    subtitle: "Rooted in tradition",
-    description:
-      "Heritage-inspired gold jewellery designs with classic South Indian craftsmanship.",
-    image:
-      "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?auto=format&fit=crop&w=1000&q=85",
+    title: "Amuliya",
+    subtitle: "Collection of Diamonds",
+    image: amuliyaImage,
   },
   {
     id: 3,
-    title: "Daily Wear",
-    subtitle: "Everyday elegance",
-    description:
-      "Lightweight jewellery designs made for comfort, style, and regular wear.",
-    image:
-      "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=1000&q=85",
+    title: "Indian Bridal",
+    subtitle: "Wedding Collection",
+    image: indianBridalImage,
+  },
+  {
+    id: 4,
+    title: "Indian Ethnic",
+    subtitle: "Traditional Collection",
+    image: indianEthnicImage,
+  },
+  {
+    id: 5,
+    title: "Ruby and Emerald",
+    subtitle: "Gemstone Collection",
+    image: rubyEmeraldImage,
+  },
+  {
+    id: 6,
+    title: "Apsara Rose Gold",
+    subtitle: "Rose Gold Collection",
+    image: apsaraRoseGoldImage,
   },
 ];
 
 function FeaturedCollections() {
+  const navigate = useNavigate();
+
   return (
-    <section className="featured-collections-section" id="collections">
+    <section
+      className="home-featured-section"
+      id="collections"
+    >
       <div className="container">
         <div className="section-heading-center">
-          <p className="section-eyebrow">Featured Collections</p>
+          <p className="section-eyebrow">
+            Featured Collections
+          </p>
 
-          <h2 className="section-title">Designed for Every Moment</h2>
+          <h2 className="section-title">
+            Discover Our Signature Collections
+          </h2>
 
           <p className="section-description">
-            From bridal jewellery to everyday wear, the collection section helps
-            customers quickly discover designs based on occasion and style.
+            Explore Muliya's distinctive jewellery collections,
+            designed for weddings, traditions, celebrations,
+            and everyday elegance.
           </p>
         </div>
 
-        <div className="featured-collections-grid">
+        <div className="home-featured-grid">
           {collections.map((collection) => (
-            <article className="collection-card" key={collection.id}>
-              <div className="collection-image">
-                <img src={collection.image} alt={collection.title} />
+            <article
+              className="home-featured-card"
+              key={collection.id}
+            >
+              <div className="home-featured-image">
+                <img
+                  src={collection.image}
+                  alt={collection.title}
+                  loading="lazy"
+                />
               </div>
 
-              <div className="collection-content">
-                <p>{collection.subtitle}</p>
+              <div className="home-featured-content">
+                <p className="home-featured-subtitle">
+                  {collection.subtitle}
+                </p>
 
                 <h3>{collection.title}</h3>
 
-                <span>{collection.description}</span>
-
-                <button className="collection-btn">
+                <button
+                  type="button"
+                  className="home-featured-button"
+                  onClick={() => navigate("/collections")}
+                >
                   View Collection
                   <ArrowRight size={16} />
                 </button>
